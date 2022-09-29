@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     let test = JSON.parse(localStorage.getItem("user") ?? "") 
 
-    if (!test) {
+    if (test) {
       this.isLoggedIn = true
     }  
   }
