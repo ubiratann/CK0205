@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './views/home/home.component';
 import { ObjectListComponent } from './views/object/object-list/object-list.component';
+import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
 import { ProfileUpdateComponent } from './views/profile/profile-update/profile-update.component';
 
 const routes: Routes = [
@@ -10,8 +11,12 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: "patrimonios",
+    path: "pesquisar-patrimonios",
     component: ObjectListComponent
+  },
+  {
+    path: "cadastrar-patrimonio",
+    component: ObjectUpdateComponent
   },
   {
     path: "perfil",
