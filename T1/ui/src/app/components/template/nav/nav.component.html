@@ -1,18 +1,38 @@
 <mat-sidenav-container class="container">
     <mat-sidenav class="sidenav" mode="side" opened fixedInViewport="true" >
         <mat-nav-list class="nav-list">
+            <a mat-list-item routerLink="/home">
+                <i class="material-icons">
+                    home
+                </i>
+                Home
+            </a>
             <a mat-list-item routerLink="/perfil">
                 <i class="material-icons">
                     person
                 </i>
                 Perfil
             </a>
-            <a mat-list-item routerLink="/patrimonios">
+            <a mat-list-item  (click)="showSubSubMenu = !showSubSubMenu" >
                 <i class="material-icons">
                     storefront
                 </i>
-                Patrimonios
+                Patrimônios
             </a>
+            <div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}">
+                <a mat-list-item  routerLink="/patrimonios" *ngIf="isLoggedIn">
+                    <i class="material-icons">
+                        library_add
+                    </i>
+                    Cadastrar
+                </a>
+                <a mat-list-item  routerLink="/patrimonios">
+                    <i class="material-icons">
+                        search
+                    </i>
+                    Pesquisar
+                </a>
+            </div>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="content">

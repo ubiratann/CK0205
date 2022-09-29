@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
+  showSubSubMenu: boolean = false;
+  isLoggedIn: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+    let test = JSON.parse(localStorage.getItem("user") ?? "") 
+
+    if (!test) {
+      this.isLoggedIn = true
+    }  
   }
 
 }
