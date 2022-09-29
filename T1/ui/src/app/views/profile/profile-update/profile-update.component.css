@@ -1,6 +1,7 @@
 form {
     margin-top: 20px;
-    padding: 20px;
+    padding-top: 10px;
+    max-width: 80%;
 }
 
 button {
