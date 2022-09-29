@@ -70,6 +70,15 @@
              </td>
         </ng-container>
 
+        <ng-container matColumnDef="canUpdate" >
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <i style="cursor: pointer;" class="material-icons" *ngIf="loggedUser.id == element.owner_id" (click)="update(element.id, element.owner_id)">
+                    edit
+                </i>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>                
     </table>

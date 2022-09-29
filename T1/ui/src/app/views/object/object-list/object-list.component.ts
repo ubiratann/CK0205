@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Object } from '@app/models/object';
+import { User } from '@app/models/user';
 
 @Component({
   selector: 'app-object-list',
@@ -10,8 +11,10 @@ export class ObjectListComponent implements OnInit {
 
   object = new Object();
   resultList: Object[] = [];
-  
+
+  loggedUser = new User();
   isLoggedIn: boolean = false;
+  
   displayedColumns : string[] = [];
 
   constructor() { }
@@ -22,7 +25,9 @@ export class ObjectListComponent implements OnInit {
     this.displayedColumns = ["id", "name", "location", "open"]
 
     if (test) {
+      this.loggedUser = test;
       this.displayedColumns.push("validated")
+      this.displayedColumns.push("canUpdate")
       this.isLoggedIn = true
     }  
   }
@@ -32,5 +37,8 @@ export class ObjectListComponent implements OnInit {
 
   // TODO
   validate(flag: boolean, id: number){}
+
+  // TODO
+  update(id:number, owner_id: number){}
 
 }
