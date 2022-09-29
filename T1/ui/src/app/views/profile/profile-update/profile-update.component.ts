@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { User } from '@app/models/user';
 
 @Component({
   selector: 'app-profile-update',
@@ -7,9 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileUpdateComponent implements OnInit {
 
+  user: User = {
+    full_name: '',
+    username: '',
+    password: '',
+    email: ''
+  };
+
+  hide: boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem("user") ?? "");
+  }
+
+  save(){
+    console.log('salvou')
+  }
+
+  cancel(){
+
   }
 
 }

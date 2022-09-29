@@ -4,31 +4,33 @@
     </mat-card-title>    
     
     <mat-card-content>    
-        <form>    
+        <form class="flexColumn">
+
+            <mat-form-field >
+                <input matInput placeholder="Nome Completo" [(ngModel)]="user.full_name" name="name">
+            </mat-form-field>
             
-            <div class="flexColumn flexCenter">
-                <mat-form-field ppearance="fill">
-                    <input matInput placeholder="Nome Completo"
-                        name="name">
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Username"
-                    name="username">
-                </mat-form-field>    
-         
-                <mat-form-field>
-                    <input type="password" matInput placeholder="Senha"
-                        name="password">
-                </mat-form-field>   
-            </div>
+            <mat-form-field>
+                <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" >
+            </mat-form-field>
+                        
+            <mat-form-field>
+                <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" name="email" >
+            </mat-form-field>
+
+            <mat-form-field>
+                <input  matInput placeholder="Senha" [type]="hide ? 'password' : 'text'"  [(ngModel)]="user.password" name="password">
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>   
 
         </form>    
-        <button mat-raised-button  color="primary">
-            Salvar
-        </button>
         
-        <button mat-raised-button >
-            Cancelar
-        </button>
+        <div class="flexRow flexJustifyCenter" >
+            <button mat-raised-button  color="primary" (click)="save()">
+                Salvar
+            </button>
+
+        </div>
+    
     </mat-card-content>    
 </mat-card>  
