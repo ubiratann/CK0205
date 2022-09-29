@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Object } from '@app/models/object';
 
 @Component({
   selector: 'app-object-update',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ObjectUpdateComponent implements OnInit {
 
-  constructor() { }
+  object = new Object();
+  file: any;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const objectId = this.route.snapshot.paramMap.get('objectId')
+    if (objectId) {
+      this.object.id = +objectId;
+    }
   }
+
+  // TODO
+  loadFile(event: any){}
+
+  // TODO
+  save(){}
+
+  //TODO
+  update(){}
 
 }
