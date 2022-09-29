@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoaderService } from '@app/utils/loader/loader.service';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +11,7 @@ export class NavComponent implements OnInit {
   showSubSubMenu: boolean = false;
   isLoggedIn: boolean = false;
 
-  constructor() { }
+  constructor( public loaderService: LoaderService) { }
 
   ngOnInit(): void {
     let test = JSON.parse(localStorage.getItem("user") ?? "") 
