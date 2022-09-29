@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Object } from '@app/models/object';
 
 @Component({
   selector: 'app-object-list',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ObjectListComponent implements OnInit {
 
-  constructor() { }
+  object = new Object();
+  resultList: Object[] = [];
+  
+  isLoggedIn: boolean = false;
+  displayedColumns : string[] = [];
 
+  constructor() { }
+  
   ngOnInit(): void {
+    let test = JSON.parse(localStorage.getItem("user") ?? "") 
+    
+    this.displayedColumns = ["id", "name", "location", "open"]
+
+    if (test) {
+      this.displayedColumns.push("validated")
+      this.isLoggedIn = true
+    }  
   }
+
+  // TODO 
+  search(){}
+
+  // TODO
+  validate(flag: boolean, id: number){}
 
 }

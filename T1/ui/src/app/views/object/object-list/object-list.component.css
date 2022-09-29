@@ -1,9 +1,24 @@
 form {
-    display: flex;
-    flex-direction: column;
     margin-top: 20px;
+    
 }
 
 button {
     margin: 20px 15px 0px 0px;
+}
+
+.width10{
+    width: 10%;
+}
+
+.width35{
+    width: 35%;
+}
+
+.marginRight15px{
+    margin-right: 15px;
+}
+
+table {
+    width: 100%;
 }
