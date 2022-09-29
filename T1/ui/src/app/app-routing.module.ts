@@ -6,7 +6,7 @@ import { ProfileUpdateComponent } from './views/profile/profile-update/profile-u
 
 const routes: Routes = [
   {
-    path: "",
+    path: "home",
     component: HomeComponent
   },
   {
