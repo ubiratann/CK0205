@@ -4,4 +4,5 @@ export class Object{
     location?: string;
     file?: string;
     validated?: boolean;
+    owner_id?: number;
 }
