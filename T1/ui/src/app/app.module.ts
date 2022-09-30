@@ -35,6 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InterceptorService } from './utils/interceptor/interceptor.service';
+import { LoginComponent } from './views/login/login.component';
+import { SigninComponent } from './views/signin/signin.component';
 
 registerLocaleData(localePt);
 
@@ -46,6 +48,8 @@ registerLocaleData(localePt);
     ObjectUpdateComponent,
     ObjectListComponent,
     ProfileUpdateComponent,
+    LoginComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
