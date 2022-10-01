@@ -40,6 +40,7 @@ import { UserListComponent } from './views/user/user-list/user-list.component';
 import { UserLoginComponent } from './views/user/user-login/user-login.component';
 import { UserSigninComponent } from './views/user/user-signin/user-signin.component';
 import { UserUpdateComponent } from './views/user/user-update/user-update.component';
+import { ObjectValidateComponent } from './views/object/object-validate/object-validate.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -54,6 +55,7 @@ registerLocaleData(localePt);
     UserLoginComponent,
     UserSigninComponent,
     UserUpdateComponent,
+    ObjectValidateComponent,
   ],
   imports: [
     BrowserModule,
