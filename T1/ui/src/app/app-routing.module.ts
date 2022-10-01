@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogoutComponent } from './components/template/logout/logout.component';
 import { HomeComponent } from './views/home/home.component';
-import { LoginComponent } from './views/user/login/login.component';
+import { UserLoginComponent } from './views/user/user-login/user-login.component';
 import { ObjectListComponent } from './views/object/object-list/object-list.component';
 import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
-import { EditComponent as UserEditComponent} from './views/user/edit/edit.component';
-import { SigninComponent } from './views/user/signin/signin.component';
+import { UserUpdateComponent} from './views/user/user-update/user-update.component';
+import { UserSigninComponent} from './views/user/user-signin/user-signin.component';
 
 const routes: Routes = [
   {
@@ -23,15 +23,15 @@ const routes: Routes = [
   },
   {
     path: "editar-perfil",
-    component: UserEditComponent
+    component: UserUpdateComponent
   },
   {
     path: "login",
-    component: LoginComponent
+    component: UserLoginComponent
   },
   {
     path: "signin",
-    component: SigninComponent
+    component: UserSigninComponent
   },
   {
     path: "logout",

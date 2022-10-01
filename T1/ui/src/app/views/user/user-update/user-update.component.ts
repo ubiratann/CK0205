@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@app/models/user';
 
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  selector: 'app-user-update',
+  templateUrl: './user-update.component.html',
+  styleUrls: ['./user-update.component.css']
 })
-export class EditComponent implements OnInit {
-
-
+export class UserUpdateComponent implements OnInit {
+  
   user: User = {
     full_name: '',
     username: '',

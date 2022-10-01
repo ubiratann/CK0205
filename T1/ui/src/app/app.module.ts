@@ -27,19 +27,20 @@ import { ObjectListComponent } from './views/object/object-list/object-list.comp
 import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { InterceptorService } from './utils/interceptor/interceptor.service';
-import { LoginComponent } from './views/user/login/login.component';
-import { SigninComponent } from './views/user/signin/signin.component';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { LogoutComponent } from './components/template/logout/logout.component';
-import { ListComponent } from './views/user/list/list.component';
-import { EditComponent } from './views/user/edit/edit.component';
+import { InterceptorService } from './utils/interceptor/interceptor.service';
+import { UserEditComponent } from './views/user/user-edit/user-edit.component';
+import { UserListComponent } from './views/user/user-list/user-list.component';
+import { UserLoginComponent } from './views/user/user-login/user-login.component';
+import { UserSigninComponent } from './views/user/user-signin/user-signin.component';
+import { UserUpdateComponent } from './views/user/user-update/user-update.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -49,11 +50,12 @@ registerLocaleData(localePt);
     HomeComponent,
     ObjectUpdateComponent,
     ObjectListComponent,
-    LoginComponent,
-    SigninComponent,
     LogoutComponent,
-    ListComponent,
-    EditComponent,
+    UserEditComponent,
+    UserListComponent,
+    UserLoginComponent,
+    UserSigninComponent,
+    UserUpdateComponent,
   ],
   imports: [
     BrowserModule,

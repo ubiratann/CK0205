@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { User } from '@app/models/user';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-user-signin',
+  templateUrl: './user-signin.component.html',
+  styleUrls: ['./user-signin.component.css']
 })
-export class LoginComponent implements OnInit {
+export class UserSigninComponent implements OnInit {
 
   user = new User();
   hide: boolean = true;
@@ -15,11 +15,6 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  //TODO
-  login(){
-    
   }
 
   //TODO
