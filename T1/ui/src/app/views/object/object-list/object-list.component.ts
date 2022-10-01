@@ -27,7 +27,7 @@ export class ObjectListComponent implements OnInit {
     if (test) {
       this.loggedUser = test;
       this.displayedColumns.push("validated")
-      this.displayedColumns.push("canUpdate")
+      this.displayedColumns.push("update")
       this.isLoggedIn = true
     }  
   }
