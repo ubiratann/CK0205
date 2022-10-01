@@ -36,6 +36,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InterceptorService } from './utils/interceptor/interceptor.service';
 import { LoginComponent } from './views/user/login/login.component';
 import { SigninComponent } from './views/user/signin/signin.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { LogoutComponent } from './components/template/logout/logout.component';
 import { ListComponent } from './views/user/list/list.component';
 import { EditComponent } from './views/user/edit/edit.component';
@@ -77,7 +78,8 @@ registerLocaleData(localePt);
     MatSelectModule,      
     MatSlideToggleModule,
     MatRadioModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR'},
