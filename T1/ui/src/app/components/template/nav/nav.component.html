@@ -1,6 +1,32 @@
 <mat-sidenav-container class="container">
     <mat-sidenav class="sidenav" mode="side" opened fixedInViewport="true" >
-        <mat-nav-list class="nav-list">
+        <mat-nav-list>
+            <ng-container *ngFor="let menu of menuList; index as i;">
+                <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
+                    [ngTemplateOutletContext]="{menu:menu}">
+                </ng-container>
+            </ng-container>
+        </mat-nav-list>
+        
+        <ng-template #parentMenu let-menu="menu" class="sidenav">
+            <mat-list-item class="sidenav" [routerLink]="menu.routerLink"  routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                <mat-icon>{{menu.icon}}</mat-icon> {{menu.text}}
+            </mat-list-item>
+        </ng-template>
+        
+        <ng-template #childMenu let-menu="menu" >
+            <mat-expansion-panel [class.mat-elevation-z0]="true" hideToggle>
+                <mat-expansion-panel-header class="sidenav">
+                    <mat-icon mat-list-icon>{{menu.icon}}</mat-icon>{{menu.text}}
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <mat-list-item class="sidenav" [routerLink]="submenu.routerLink" *ngFor="let submenu of menu.children" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                        <mat-icon>{{submenu.icon}}</mat-icon> {{submenu.text}}
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-expansion-panel>
+        </ng-template>
+        <!-- <mat-nav-list class="nav-list">
             <a mat-list-item routerLink="/home">
                 <i class="material-icons">
                     home
@@ -33,7 +59,7 @@
                     Pesquisar
                 </a>
             </div>
-        </mat-nav-list>
+        </mat-nav-list> -->
     </mat-sidenav>
     <mat-sidenav-content>
         <div *ngIf="loaderService.isLoading | async" class="loader-container">
