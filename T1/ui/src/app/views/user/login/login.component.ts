@@ -18,7 +18,9 @@ export class LoginComponent implements OnInit {
   }
 
   //TODO
-  login(){}
+  login(){
+    
+  }
 
   //TODO
   signin(){

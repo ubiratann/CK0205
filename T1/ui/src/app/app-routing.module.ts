@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LogoutComponent } from './components/logout/logout.component';
 import { HomeComponent } from './views/home/home.component';
-import { LoginComponent } from './views/login/login.component';
+import { LoginComponent } from './views/user/login/login.component';
 import { ObjectListComponent } from './views/object/object-list/object-list.component';
 import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
 import { ProfileUpdateComponent } from './views/profile/profile-update/profile-update.component';
-import { SigninComponent } from './views/signin/signin.component';
+import { SigninComponent } from './views/user/signin/signin.component';
 
 const routes: Routes = [
   {
-    path: "home",
+    path: "",
     component: HomeComponent
   },
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
     path: "signin",
     component: SigninComponent
   },
+  {
+    path: "logout",
+    component: LogoutComponent
+  }
+
 ];
 
 @NgModule({
