@@ -25,7 +25,6 @@ import { MatTableModule } from '@angular/material/table';
 import { HomeComponent } from './views/home/home.component';
 import { ObjectListComponent } from './views/object/object-list/object-list.component';
 import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
-import { ProfileUpdateComponent } from './views/profile/profile-update/profile-update.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,9 +34,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InterceptorService } from './utils/interceptor/interceptor.service';
-import { LoginComponent } from './views/login/login.component';
-import { SigninComponent } from './views/signin/signin.component';
-
+import { LoginComponent } from './views/user/login/login.component';
+import { SigninComponent } from './views/user/signin/signin.component';
+import { LogoutComponent } from './components/template/logout/logout.component';
+import { ListComponent } from './views/user/list/list.component';
+import { EditComponent } from './views/user/edit/edit.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -47,9 +48,11 @@ registerLocaleData(localePt);
     HomeComponent,
     ObjectUpdateComponent,
     ObjectListComponent,
-    ProfileUpdateComponent,
     LoginComponent,
     SigninComponent,
+    LogoutComponent,
+    ListComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,
