@@ -36,7 +36,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { LogoutComponent } from './components/template/logout/logout.component';
 import { InterceptorService } from './utils/interceptor/interceptor.service';
-import { UserEditComponent } from './views/user/user-edit/user-edit.component';
 import { UserListComponent } from './views/user/user-list/user-list.component';
 import { UserLoginComponent } from './views/user/user-login/user-login.component';
 import { UserSigninComponent } from './views/user/user-signin/user-signin.component';
@@ -51,7 +50,6 @@ registerLocaleData(localePt);
     ObjectUpdateComponent,
     ObjectListComponent,
     LogoutComponent,
-    UserEditComponent,
     UserListComponent,
     UserLoginComponent,
     UserSigninComponent,
