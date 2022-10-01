@@ -24,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog'
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
@@ -84,6 +85,7 @@ registerLocaleData(localePt);
     MatRadioModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    MatDialogModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR'},
