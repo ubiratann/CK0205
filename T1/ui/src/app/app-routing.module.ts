@@ -7,6 +7,7 @@ import { ObjectListComponent } from './views/object/object-list/object-list.comp
 import { ObjectUpdateComponent } from './views/object/object-update/object-update.component';
 import { UserUpdateComponent} from './views/user/user-update/user-update.component';
 import { UserSigninComponent} from './views/user/user-signin/user-signin.component';
+import { UserListComponent } from './views/user/user-list/user-list.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: "logout",
     component: LogoutComponent
+  },
+  {
+    path: "gerenciar-usuarios",
+    component: UserListComponent
   }
 
 ];
