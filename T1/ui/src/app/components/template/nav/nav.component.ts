@@ -45,7 +45,20 @@ export class NavComponent implements OnInit {
         "icon": "add",
         "routerLink": "/cadastrar-patrimonio",
       }]
-    }]
+    },
+    {
+      "text": "Admin",
+      "icon": "admin_panel_settings",
+      "public": true,
+      "admin_only": false,
+      "children": [{
+        "text": "Controle Usuários",
+        "icon": "group",
+        "routerLink": "/gerenciar-usuarios",
+        }]
+    },
+  
+  ]
 
   constructor( 
     public loaderService: LoaderService,
