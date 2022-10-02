@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ObjectValidateComponent implements OnInit {
 
+  validation = {
+    description: '',
+    validated: null
+  }
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  // TODO
+  validate() {}
 }

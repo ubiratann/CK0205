@@ -58,22 +58,19 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="validated" *ngIf="isLoggedIn">
-            <th mat-header-cell *matHeaderCellDef> Validado? </th>
+        <ng-container matColumnDef="validate" *ngIf="isLoggedIn">
+            <th mat-header-cell *matHeaderCellDef> Validar </th>
             <td mat-cell *matCellDef="let element"> 
-                <mat-form-field>
-                    <mat-select [(value)]="element.validated" (selectionChange)="validate($event.value, element.id)">
-                      <mat-option [value]="true">sim</mat-option>
-                      <mat-option [value]="false">não</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <i style="cursor: pointer;" class="material-icons" *ngIf="loggedUser.id != element.owner_id" (click)="validate(element.id, element.owner_id)">
+                    add_task
+                </i>
              </td>
         </ng-container>
 
-        <ng-container matColumnDef="update" *ngIf="loggedUser.id == element.owner_id"  >
-            <th mat-header-cell *matHeaderCellDef></th>
+        <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef>Editar</th>
             <td mat-cell *matCellDef="let element">
-                <i style="cursor: pointer;" class="material-icons" (click)="update(element.id, element.owner_id)">
+                <i style="cursor: pointer;" class="material-icons" *ngIf="loggedUser.id == element.owner_id" (click)="update(element.id, element.owner_id)">
                     edit
                 </i>
             </td>

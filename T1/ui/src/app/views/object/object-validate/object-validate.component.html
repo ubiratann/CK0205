@@ -1,1 +1,23 @@
-<p>object-validate works!</p>
+<mat-dialog-content>
+    <div id="container" class="flexColumn flexAlignCenter">
+        <form  class="flexColumn">
+
+            <mat-form-field>
+                <mat-label>Patrimônio validado? *</mat-label>
+                <mat-select [(value)]="validation.validated">
+                    <mat-option value="true">sim</mat-option>
+                    <mat-option value="false">não</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Justificativa *</mat-label>
+                <textarea  rows="5" cols="400" [(ngModel)]="validation.description" matInput placeholder="Justifique sua validação" name="description"></textarea>
+            </mat-form-field>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button (click)="validate()" color="primary">Salvar</button>
+    <button mat-button mat-dialog-close color="danger">Cancelar</button>
+</mat-dialog-actions>

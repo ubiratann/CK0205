@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Object } from '@app/models/object';
 import { User } from '@app/models/user';
+import { MatDialog } from '@angular/material/dialog';
+import { ObjectValidateComponent } from '../object-validate/object-validate.component';
 
 @Component({
   selector: 'app-object-list',
@@ -10,14 +12,30 @@ import { User } from '@app/models/user';
 export class ObjectListComponent implements OnInit {
 
   object = new Object();
-  resultList: Object[] = [];
+  resultList: Object[] =  [
+    {
+      name: 'teste',
+      location: 'teste',
+      id: 1,
+      file: 'teste',
+      owner_id: 1,
+    },
+    {
+      name: 'Lorem ipsum dolor sit amet consectetur adipisicing elite?',
+      location: 'Lorem ipsum dolor sit amet ',
+      id: 2,
+      file: 'teste',
+      validated: true,
+      owner_id: 2
+    }
+  ];
 
   loggedUser = new User();
   isLoggedIn: boolean = false;
   
   displayedColumns : string[] = [];
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
   
   ngOnInit(): void {
     let test = JSON.parse(localStorage.getItem("user") ?? "") 
@@ -26,7 +44,7 @@ export class ObjectListComponent implements OnInit {
 
     if (test) {
       this.loggedUser = test;
-      this.displayedColumns.push("validated")
+      this.displayedColumns.push("validate")
       this.displayedColumns.push("update")
       this.isLoggedIn = true
     }  
@@ -35,8 +53,15 @@ export class ObjectListComponent implements OnInit {
   // TODO 
   search(){}
 
-  // TODO
-  validate(flag: boolean, id: number){}
+  validate(flag: boolean, id: number){    
+    const dialogRef = this.dialog.open(ObjectValidateComponent, {
+      minWidth: "400px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
   // TODO
   update(id:number, owner_id: number){}
