@@ -16,6 +16,10 @@
     z-index: 99;
 }
 
+.logo-nav img{
+    max-height: 80px;
+}
+
 ::ng-deep .mat-expansion-panel-header {
     padding: 0 16px !important;
 }

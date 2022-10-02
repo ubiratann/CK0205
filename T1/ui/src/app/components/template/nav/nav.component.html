@@ -1,6 +1,12 @@
 <mat-sidenav-container class="container">
     <mat-sidenav class="sidenav" mode="side" opened fixedInViewport="true" >
         <mat-nav-list>
+            <div class="logo-nav flexColumn flexAlignCenter">
+                <img src="./assets/img/favicon.png">
+                <span style="color: black;">
+                    S. V. P.
+                </span>
+            </div>
             <ng-container *ngFor="let menu of menuList; index as i;">
                 <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
                     [ngTemplateOutletContext]="{menu:menu}">
