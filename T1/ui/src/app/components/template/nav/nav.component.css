@@ -37,7 +37,7 @@
 }
 
 ::ng-deep .mat-expansion-panel .mat-list-item {
-    padding-left: 15px !important;
+    padding-left: 25px !important;
 }
 
 ::ng-deep .mat-nav-list .is-active {
@@ -47,10 +47,6 @@
 ::ng-deep .mat-list-base {
     padding-top: 0 !important;
 }
-
-::ng-deep .mat-nav-list .mat-list-item.is-active .mat-list-item-content {
-    padding: 0 8px;
-} 
 
 mat-nav-list{
     background-color: #3f51b5;
