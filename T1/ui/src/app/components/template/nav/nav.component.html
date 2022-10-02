@@ -32,40 +32,6 @@
                 </mat-nav-list>
             </mat-expansion-panel>
         </ng-template>
-        <!-- <mat-nav-list class="nav-list">
-            <a mat-list-item routerLink="/home">
-                <i class="material-icons">
-                    home
-                </i>
-                Home
-            </a>
-            <a mat-list-item routerLink="/perfil">
-                <i class="material-icons">
-                    person
-                </i>
-                Perfil
-            </a>
-            <a mat-list-item  (click)="showSubSubMenu = !showSubSubMenu" >
-                <i class="material-icons">
-                    storefront
-                </i>
-                Patrimônios
-            </a>
-            <div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}">
-                <a mat-list-item  routerLink="/cadastrar-patrimonio" *ngIf="isLoggedIn">
-                    <i class="material-icons">
-                        library_add
-                    </i>
-                    Cadastrar
-                </a>
-                <a mat-list-item  routerLink="/pesquisar-patrimonios">
-                    <i class="material-icons">
-                        search
-                    </i>
-                    Pesquisar
-                </a>
-            </div>
-        </mat-nav-list> -->
     </mat-sidenav>
     <mat-sidenav-content>
         <div *ngIf="loaderService.isLoading | async" class="loader-container">
