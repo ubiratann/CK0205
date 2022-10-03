@@ -8,17 +8,10 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent implements OnInit{
-  title = 'Gerenciador de Patrimonios';
-  loggedIn: boolean = false;
 
   constructor(){}
 
   ngOnInit(): void {
-
-    let test = JSON.parse(localStorage.getItem("user") ?? "") 
-
-    if (test) {
-      this.loggedIn = true
-    }  
+    
   }
 }
