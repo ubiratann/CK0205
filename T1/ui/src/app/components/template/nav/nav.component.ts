@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TemplateService } from '@app/components/template.service';
 import { LoaderService } from '@app/utils/loader/loader.service';
+import { UserService } from '@app/views/user/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -11,8 +13,14 @@ export class NavComponent implements OnInit {
 
   showSubSubMenu: boolean = false;
   isLoggedIn: boolean = false;
-
-  menuList = [
+  menuList: any = [
+    {
+      "text": "Home",
+      "icon": "home",
+      "public": false,
+      "admin_only": false,
+      "routerLink": "/",
+    },
     {
       "text": "Perfil",
       "icon": "person",
@@ -52,26 +60,37 @@ export class NavComponent implements OnInit {
       "public": true,
       "admin_only": false,
       "children": [{
-        "text": "Controle Usuários",
+        "text": "Usuários",
         "icon": "group",
         "routerLink": "/gerenciar-usuarios",
         }]
-    },
-  
-  ]
+    }
+  ];  
+
 
   constructor( 
     public loaderService: LoaderService,
-    private router: Router
+    private templateService: TemplateService,
+    private userService: UserService,
+    private router: Router,
   ) { }
 
-  ngOnInit(): void {
-    let test = JSON.parse(localStorage.getItem("user") ?? "") 
 
-    if (test) {
-      this.isLoggedIn = true
+  ngOnInit(): void {
+    // this.loadMenu();
+
+    // this.templateService.updateMenu.subscribe(data => {
+    //   this.loadMenu();
+    // });
+  }
+  
+  loadMenu(){
+    if(this.userService.token != ''){
+      this.menuList = this.templateService.getMenu(this.userService.role)
+        .subscribe(data => {
+          this.menuList = data;
+        })
     }
   }
-
 }
    
