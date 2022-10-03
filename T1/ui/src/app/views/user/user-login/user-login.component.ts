@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TemplateService } from '@app/components/template.service';
 import { User } from '@app/models/user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-login',
@@ -12,14 +14,24 @@ export class UserLoginComponent implements OnInit {
   user = new User();
   hide: boolean = true;
 
-  constructor(private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private templateService: TemplateService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
-  //TODO
   login(){
-    
+    this.userService.authenticate(this.user)
+      .subscribe(data => {
+        if(data){
+          this.userService.token = data.jwtToken;
+          this.templateService.updateMenu.next();
+          this.router.navigate(['/home']);
+        }
+      });
   }
 
   //TODO
