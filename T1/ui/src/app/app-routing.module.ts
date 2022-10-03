@@ -8,11 +8,12 @@ import { ObjectUpdateComponent } from './views/object/object-update/object-updat
 import { UserUpdateComponent} from './views/user/user-update/user-update.component';
 import { UserSigninComponent} from './views/user/user-signin/user-signin.component';
 import { UserListComponent } from './views/user/user-list/user-list.component';
+import { UserObjectsComponent } from './views/user/user-objects/user-objects.component';
 
 const routes: Routes = [
   {
     path: "",
-    component: HomeComponent
+    component: UserObjectsComponent
   },
   {
     path: "pesquisar-patrimonios",
