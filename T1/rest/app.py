@@ -1,12 +1,8 @@
 import os
 import api.router.object as object
-
 from flask import Flask
-from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
 
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "DEV")
 
