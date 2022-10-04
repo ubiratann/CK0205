@@ -2,19 +2,28 @@ CREATE DATABASE `svp` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_090
 
 USE `svp`;
 
+-- svp.roles definition
 
--- svp.`role` definition
-
-CREATE TABLE `role` (
+CREATE TABLE `roles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- svp.`user` definition
+-- svp.files definition
 
-CREATE TABLE `user` (
+CREATE TABLE `files` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(300) NOT NULL,
+  `s3_link` varchar(900) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- svp.users definition
+
+CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(900) NOT NULL,
   `username` varchar(100) NOT NULL,
@@ -22,21 +31,23 @@ CREATE TABLE `user` (
   `role` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_FK` (`role`),
-  CONSTRAINT `user_FK` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
+  CONSTRAINT `user_FK` FOREIGN KEY (`role`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- svp.`object` definition
+-- svp.objects definition
 
-CREATE TABLE `object` (
+CREATE TABLE `objects` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `location` varchar(100) DEFAULT NULL,
-  `file` varchar(1000) DEFAULT NULL,
   `owner` int DEFAULT NULL,
+  `file` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `object_FK` (`owner`),
-  CONSTRAINT `object_FK` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
+  KEY `objects_FK` (`file`),
+  CONSTRAINT `objects_FK` FOREIGN KEY (`file`) REFERENCES `files` (`id`),
+  CONSTRAINT `objects_FK_1` FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -48,5 +59,5 @@ CREATE TABLE `validations` (
   `object` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `validations_FK` (`object`),
-  CONSTRAINT `validations_FK` FOREIGN KEY (`object`) REFERENCES `object` (`id`)
+  CONSTRAINT `validations_FK` FOREIGN KEY (`object`) REFERENCES `objects` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
