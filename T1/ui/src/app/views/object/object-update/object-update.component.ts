@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { File } from '@app/models/file';
 import { Object } from '@app/models/object';
 import { ObjectService } from '../object.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-object-update',
@@ -18,13 +18,20 @@ export class ObjectUpdateComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private objectService: ObjectService,
-    private snackBar: MatSnackBar) { }
+    private snackBarService: SnackbarService) { }
 
   ngOnInit(): void {
     const objectId = this.route.snapshot.paramMap.get('objectId')
+    
+    if(!this.file.name)
+    {
+      this.file.name = "Selecione um arquivo"
+    }
+    
     if (objectId) {
       this.object.id = +objectId;
     }
+
   }
 
   loadFile(event: any){
@@ -37,22 +44,45 @@ export class ObjectUpdateComponent implements OnInit {
     })
     
     reader.readAsDataURL(file);
-
   }
 
   save(){
+
+    if(!this.validated()) return;
 
     this.objectService.create({
         name: this.object.name, 
         location: this.object.location, 
         file: this.file, 
-        owner: 2})
+        owner: 4})
       .subscribe(data => {
-        this.snackBar.open(data.message, "fechar")
+        this.snackBarService.openSnackBar("Patrimônio inserido com sucesso","")
       },)
+  }
+
+  validated(){
+
+    
+    if(!this.object.name){
+      this.snackBarService.openSnackBar("O nome do patrimônio é obrigatorio", "fechar")
+      return false
+    }
+    
+    if(!this.object.location){
+      this.snackBarService.openSnackBar("A localização do patrimônio é obrigatoria", "fechar")
+      return false
+    }
+    
+    if(!this.file.base64){
+      this.snackBarService.openSnackBar("É obrigatório anexar uma arquivo de referência", "fechar")
+      return false
+    }
+
+    return true
   }
 
   //TODO
   update(){}
 
+  
 }
