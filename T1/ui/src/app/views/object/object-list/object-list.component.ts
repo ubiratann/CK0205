@@ -3,6 +3,14 @@ import { Object } from '@app/models/object';
 import { User } from '@app/models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectValidateComponent } from '../object-validate/object-validate.component';
+import { ObjectService } from '../object.service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
+
+
+
 
 @Component({
   selector: 'app-object-list',
@@ -12,30 +20,17 @@ import { ObjectValidateComponent } from '../object-validate/object-validate.comp
 export class ObjectListComponent implements OnInit {
 
   object = new Object();
-  resultList: Object[] =  [
-    {
-      name: 'teste',
-      location: 'teste',
-      id: 1,
-      file: 'teste',
-      owner_id: 1,
-    },
-    {
-      name: 'Lorem ipsum dolor sit amet consectetur adipisicing elite?',
-      location: 'Lorem ipsum dolor sit amet ',
-      id: 2,
-      file: 'teste',
-      validated: true,
-      owner_id: 2
-    }
-  ];
+  resultList: Object[] = []
 
   loggedUser = new User();
   isLoggedIn: boolean = false;
   
-  displayedColumns : string[] = [];
+  displayedColumns : string[] = []; 
 
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+    private service: ObjectService,
+    private snackBarService: SnackbarService) { }
   
   ngOnInit(): void {
     
@@ -46,8 +41,20 @@ export class ObjectListComponent implements OnInit {
   
   }
 
-  // TODO 
-  search(){}
+  search(){
+    let id = this.object.id
+    
+    if(!id)
+      this.snackBarService.openSnackBar("Inform o ID do patrimônio", "fechar")
+
+    else{
+      this.service.get(id)
+        .subscribe(
+          (data) => {
+          this.resultList = [data.data];
+        })	
+    }
+  }
 
   validate(flag: boolean, id: number){    
     const dialogRef = this.dialog.open(ObjectValidateComponent, {
