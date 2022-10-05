@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { File } from '@app/models/file';
 import { Object } from '@app/models/object';
 import { ObjectService } from '../object.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-object-update',
@@ -16,7 +17,8 @@ export class ObjectUpdateComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private objectService: ObjectService) { }
+    private objectService: ObjectService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     const objectId = this.route.snapshot.paramMap.get('objectId')
@@ -44,10 +46,10 @@ export class ObjectUpdateComponent implements OnInit {
         name: this.object.name, 
         location: this.object.location, 
         file: this.file, 
-        owner: 1})
+        owner: 2})
       .subscribe(data => {
-        console.log(data)
-      })
+        this.snackBar.open(data.message, "fechar")
+      },)
   }
 
   //TODO
