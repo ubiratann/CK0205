@@ -2,17 +2,26 @@ import logging
 import boto3
 import base64
 import random
+import subprocess
+import os 
 
 from botocore.exceptions import ClientError
 
-seed(1)
+def create_local_temp_file(base64_string, filename, username):
 
-def create_local_temp_file(base64, filename, username):
-    suffix = random
-
-def delete_local_temp_file(filePath):
-    ...
+    image_code = base64.b64decode(base64_string.split(",")[1] + '==')
     
+    file_path = f"{username}/{filename}"
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    with open(f"/tmp/{file_path}", "wb") as fh:
+        fh.write(image_code)
+
+    return file_path
+
+def delete_local_temp_file(file_path):
+    os.remove(f"/tmp/{file_path}")
+
 def create_bucket(bucket_name, region=None):
     """Create an S3 bucket in a specified region
 
@@ -52,9 +61,7 @@ def upload_file(file_name, bucket, object_name):
     s3_client = boto3.client('s3')
     
     try:
-        response = s3_client.upload_file(file_name, bucket, object_name)
-        return response
-    
+        s3_client.upload_file(f"/tmp/{file_name}", bucket, file_name)
+        return f"https://{bucket}.s3.amazonaws.com/{file_name.replace(' ' , '+')}"
     except ClientError as e:
-        logging.error(e)
-        return False
+        print(e)
