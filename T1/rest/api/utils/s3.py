@@ -12,7 +12,7 @@ def create_local_temp_file(base64_string, filename, username):
     image_code = base64.b64decode(base64_string.split(",")[1] + '==')
     
     file_path = f"{username}/{filename}"
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    os.makedirs(os.path.dirname(f"/tmp/{file_path}"), exist_ok=True)
 
     with open(f"/tmp/{file_path}", "wb") as fh:
         fh.write(image_code)
