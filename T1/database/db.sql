@@ -27,7 +27,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(900) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(900) NOT NULL,
   `role` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_FK` (`role`),
@@ -61,3 +61,36 @@ CREATE TABLE `validations` (
   KEY `validations_FK` (`object`),
   CONSTRAINT `validations_FK` FOREIGN KEY (`object`) REFERENCES `objects` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+INSERT INTO roles(name) values("admin");
+INSERT INTO roles(name) values("regular");
+INSERT INTO roles(name) values("guest");
+
+INSERT INTO users(full_name, username, password, `role`) values (
+	"admin root", 
+	"admin", 
+	"qwe123", 
+	(SELECT id FROM roles WHERE name LIKE 'admin')
+);
+
+INSERT INTO users(full_name, username, password, `role`) values (
+	"Ubiratan Junior", 
+	"bira", 
+	"qwe123", 
+	(SELECT id FROM roles WHERE name LIKE 'regular')
+);
+
+INSERT INTO users(full_name, username, password, `role`) values (
+	"Geovane Oliveira", 
+	"xeo", 
+	"qwe123", 
+	(SELECT id FROM roles WHERE name LIKE 'regular')
+);
+
+INSERT INTO users(full_name, username, password, `role`) values (
+	"guest", 
+	"guest", 
+	"guest", 
+	(SELECT id FROM roles WHERE name LIKE 'guest')
+);
