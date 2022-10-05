@@ -8,7 +8,7 @@ from mysql.connector import Error
 USER     = os.environ.get("MYSQL_USER", "root")
 PASSWORD = os.environ.get("MYSQL_PASSWORD", "qwe123")
 HOST     = os.environ.get("MYSQL_HOST", "localhost")
-DATABASE = os.environ.get("MYSQL_DATABASE", "")
+DATABASE = os.environ.get("MYSQL_DATABASE", "svp")
 
 class DatabaseConnector:
 
@@ -23,7 +23,7 @@ class DatabaseConnector:
             logging.error(err)
 
     def get_cursor(self) -> MySQLCursor:
-        return self.connection.cursor(dictionary=True, buffered=True)
+        return self.connection.cursor(dictionary=True)
 
     def close_connection(self) -> None:
         self.connection.close()
