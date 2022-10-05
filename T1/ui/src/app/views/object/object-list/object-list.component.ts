@@ -38,16 +38,12 @@ export class ObjectListComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
   
   ngOnInit(): void {
-    let test = JSON.parse(localStorage.getItem("user") ?? "") 
     
     this.displayedColumns = ["id", "name", "location", "open"]
-
-    if (test) {
-      this.loggedUser = test;
-      this.displayedColumns.push("validate")
-      this.displayedColumns.push("update")
-      this.isLoggedIn = true
-    }  
+    this.displayedColumns.push("validate")
+    this.displayedColumns.push("update")
+    this.isLoggedIn = true
+  
   }
 
   // TODO 
