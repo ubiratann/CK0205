@@ -10,7 +10,7 @@ export class ObjectService {
   constructor(private http: HttpClient) { }
 
   create(obj: any){
-    return this.http.post(`${environment.apiUrl}/object/`, obj);
+    return this.http.post<any>(`${environment.apiUrl}/object/`, obj);
   }
 
 }
