@@ -5,16 +5,8 @@
     
     <form class="flexRow">
     
-        <mat-form-field class="width10 marginRight15px">
-            <input  [(ngModel)]="object.id" matInput placeholder="ID" name="id">
-        </mat-form-field>
-    
         <mat-form-field class="width35 marginRight15px">
-            <input [(ngModel)]="object.name" matInput placeholder="Nome" name="location">
-        </mat-form-field>
-    
-        <mat-form-field class="width35 marginRight15px">
-            <input [(ngModel)]="object.location" matInput placeholder="Localização" name="location">
+            <input type="number" [(ngModel)]="object.id" matInput placeholder="ID" name="id">
         </mat-form-field>
    
     </form>
@@ -49,7 +41,7 @@
         <ng-container matColumnDef="open">
             <th mat-header-cell *matHeaderCellDef> Visualizar </th>
             <td mat-cell *matCellDef="let element">
-                <a [href]="element.file">
+                <a [href]="element.s3_link">
                     <i class="material-icons">
                         file_present
                     </i>
