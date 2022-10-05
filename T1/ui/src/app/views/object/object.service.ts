@@ -28,11 +28,21 @@ export class ObjectService {
   }
 
   get(id: any){
+    if(!id) id = '';
+    
     return this.http.get<any>(`${environment.apiUrl}/object/${id}`)
       .pipe(
         catchError(this.handler.bind(this))
       );
   }
+
+  update(id:any , obj: any){
+    return this.http.put<any>(`${environment.apiUrl}/object/${id}`, obj)
+      .pipe(
+        catchError(this.handler.bind(this))
+      )
+  }
+
 
   handler(error: any){
 

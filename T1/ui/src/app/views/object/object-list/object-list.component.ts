@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
+import { Router } from '@angular/router';
 
 
 
@@ -30,7 +31,8 @@ export class ObjectListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private service: ObjectService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private router: Router) { }
   
   ngOnInit(): void {
     
@@ -43,17 +45,14 @@ export class ObjectListComponent implements OnInit {
 
   search(){
     let id = this.object.id
-    
-    if(!id)
-      this.snackBarService.openSnackBar("Inform o ID do patrimônio", "fechar")
+ 
 
-    else{
-      this.service.get(id)
-        .subscribe(
-          (data) => {
-          this.resultList = [data.data];
-        })	
-    }
+    this.service.get(id)
+      .subscribe(
+        (data) => {
+        this.resultList = data.data;
+      })	
+    
   }
 
   validate(flag: boolean, id: number){    
@@ -67,6 +66,8 @@ export class ObjectListComponent implements OnInit {
   }
 
   // TODO
-  update(id:number, owner_id: number){}
+  update(id:number, owner_id: number){
+    this.router.navigate(["/atualizar-patrimonio"], {queryParams:{id:id}})
+  }
 
 }

@@ -24,6 +24,10 @@ const routes: Routes = [
     component: ObjectUpdateComponent
   },
   {
+    path: "atualizar-patrimonio",
+    component: ObjectUpdateComponent,
+  },
+  {
     path: "editar-perfil",
     component: UserUpdateComponent
   },
