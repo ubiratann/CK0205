@@ -27,7 +27,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(900) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` varchar(900) NOT NULL,
+  `password` varchar(500) NOT NULL,
   `role` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_FK` (`role`),
