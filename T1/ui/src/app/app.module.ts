@@ -43,6 +43,7 @@ import { UserSigninComponent } from './views/user/user-signin/user-signin.compon
 import { UserUpdateComponent } from './views/user/user-update/user-update.component';
 import { ObjectValidateComponent } from './views/object/object-validate/object-validate.component';
 import { UserObjectsComponent } from './views/user/user-objects/user-objects.component';
+import { UserReportsComponent } from './views/user/user-reports/user-reports.component';
 
 
 registerLocaleData(localePt);
@@ -61,6 +62,7 @@ registerLocaleData(localePt);
     UserUpdateComponent,
     ObjectValidateComponent,
     UserObjectsComponent,
+    UserReportsComponent,
   ],
   imports: [
     BrowserModule,
