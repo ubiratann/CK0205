@@ -14,11 +14,6 @@ export class ObjectValidateComponent implements OnInit {
     description: '',
     validated: null,
     object: 0,
-    validator: -1
-  }
-
-  loggedUser = {
-    id: 1
   }
 
   constructor(
@@ -26,8 +21,7 @@ export class ObjectValidateComponent implements OnInit {
     public dialogRef: MatDialogRef<ObjectValidateComponent>,
     private snackBarService: SnackbarService,
     @Inject(MAT_DIALOG_DATA) public data: {
-      object_id: number,
-      user_id: number
+      object_id: number
     },
     ) { }
 
@@ -40,13 +34,11 @@ export class ObjectValidateComponent implements OnInit {
     if(!this.validateForm()) return;
 
     this.validation.object = this.data.object_id;
-    this.validation.validator = this.data.user_id;
 
     this.dialogRef.close();
     this.service.validate(this.validation)
       .subscribe(data => {
         this.snackBarService.openSnackBar("Patrimônio validado com sucesso!", "fechar!")
-        
       })
   }
 
