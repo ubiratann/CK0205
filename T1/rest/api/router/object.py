@@ -1,14 +1,12 @@
-from crypt import methods
 from dis import findlinestarts
 from http import HTTPStatus
 from flask import Blueprint, Response, request
 from flask_cors import CORS
 from api.service.mysql_connector import DatabaseConnector
 from api.utils.s3 import delete_file, create_local_temp_file, delete_local_temp_file, upload_file
+from api.utils.dynamodb import put_item, purge_item
 
-import os
 import json
-import boto3
 
 blueprint = Blueprint("object", __name__)
 
@@ -215,3 +213,21 @@ def get(id):
                     status=status,
                     content_type="text/json; encoding: UTF-8")
 
+
+@blueprint.post("/validate")
+def validate():
+    response = {}
+    status = HTTPStatus.CREATED
+
+    try:
+        req = request.json
+        put_item(req)
+
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
