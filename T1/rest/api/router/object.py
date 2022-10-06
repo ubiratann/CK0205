@@ -106,6 +106,8 @@ def update(object_id):
 
             cursor.execute(operation=query)
 
+            purge_item(object=object_id)
+
         query = f"""
                     UPDATE objects o
                     SET
@@ -222,6 +224,25 @@ def validate():
     try:
         req = request.json
         put_item(req)
+
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
+
+@blueprint.delete("/dynamofiles")
+def test():
+    req = request.json
+    response = {}
+    status = HTTPStatus.CREATED
+
+    try:
+        req = request.json
+        purge_item(req["id"])
 
     except Exception as err:
         response["data"] = {}
