@@ -48,7 +48,7 @@ def create_bucket(bucket_name, region=None):
     return True
 
 
-def upload_file(file_name, bucket, object_name):
+def upload_file(file_name, bucket):
     """Upload a file to an S3 bucket
 
     :param file_name: File to upload
@@ -63,5 +63,15 @@ def upload_file(file_name, bucket, object_name):
     try:
         s3_client.upload_file(f"/tmp/{file_name}", bucket, file_name)
         return f"https://{bucket}.s3.amazonaws.com/{file_name.replace(' ' , '+')}"
+    except ClientError as e:
+        print(e)
+
+def delete_file(bucket, key):
+    
+    s3_client = boto3.client('s3')
+
+    try:
+        print(key)
+        s3_client.delete_object(Bucket=bucket,Key=key)
     except ClientError as e:
         print(e)
