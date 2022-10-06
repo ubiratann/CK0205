@@ -14,8 +14,14 @@ def put_item(item) -> None:
 
 def purge_item(object) -> None:
 
-    scan = table.query(
-        KeyConditionExpression=Key("object").eq(object) 
+    scan = table.scan(
+        FilterExpression=Attr("object").eq(object) 
     )
+
     for item in scan["Items"]:
-        table.delete_item(Key={"id": item["id"] })
+        table.delete_item(
+            Key={
+                "id": int(item["id"]),
+                "object": int(item["object"])
+            }
+        )
