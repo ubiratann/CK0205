@@ -1,13 +1,16 @@
-
+import json
 import logging
-from http import HTTPStatus
-from flask import Blueprint, Response, request, flash, g, redirect, render_template, session, url_for
-from werkzeug.security import check_password_hash, generate_password_hash
 
+from http import HTTPStatus
+from flask import Blueprint, Response, request
+from werkzeug.security import check_password_hash, generate_password_hash
 from api.service.mysql_connector import DatabaseConnector
+from api.utils.dynamodb import parse_decimal, query_resume
 
 blueprint = Blueprint("user", __name__)
 conn = DatabaseConnector()
+
+
 
 @blueprint.post("/auth")
 def auth():
@@ -121,4 +124,42 @@ def register():
 
 @blueprint.post("/logout")
 def logout():
-    session.clear()
+    ...
+
+@blueprint.get("/objects/<int:user_id>")
+def objects(user_id):
+    cursor = conn.get_cursor()
+
+    response = {}
+    status = HTTPStatus.OK
+
+    try:
+        
+        query = f"""
+                SELECT 
+                    o.id as id,
+                    o.name as name,
+                    o.location as location
+                FROM objects o 
+                WHERE o.owner = {user_id};
+        """
+
+        cursor.execute(operation=query)
+        rows = cursor.fetchall()
+
+        if(rows and len(rows) > 0):
+            for item in rows:
+                item["resume"] = query_resume(item=item)
+
+        response["data"] = rows
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
+
+    finally:
+        cursor.close()
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
