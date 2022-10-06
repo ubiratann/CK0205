@@ -25,3 +25,19 @@ def purge_item(object) -> None:
                 "object": int(item["object"])
             }
         )
+
+def query_resume(item):
+    validated = table.scan(
+        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq(True)
+    )
+
+    not_validated = table.scan(
+        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq(True)
+    )
+
+    return {
+        "validated": validated["Items"],
+        "not_validated": not_validated["Items"]
+    }
+
+
