@@ -112,7 +112,10 @@ export class ObjectUpdateComponent implements OnInit {
       file: this.file, 
       owner: 4})
     .subscribe(data => {
-      this.snackBarService.openSnackBar("Patrimônio atualizado com sucesso","")
+      this.snackBarService.openSnackBar("Patrimônio atualizado com sucesso","fechar");
+      this.file = new File();
+      this.object = new Object();
+      this.file.name = "Selecione um arquivo"
     },)
   }
 

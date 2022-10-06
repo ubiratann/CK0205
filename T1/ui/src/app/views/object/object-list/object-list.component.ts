@@ -40,7 +40,7 @@ export class ObjectListComponent implements OnInit {
     this.displayedColumns.push("validate")
     this.displayedColumns.push("update")
     this.isLoggedIn = true
-  
+    this.loggedUser.id = 1
   }
 
   search(){
@@ -55,9 +55,12 @@ export class ObjectListComponent implements OnInit {
     
   }
 
-  validate(flag: boolean, id: number){    
+  validate(object_id: any, user_id: any){    
     const dialogRef = this.dialog.open(ObjectValidateComponent, {
-      minWidth: "400px"
+      minWidth: "400px",
+      data: { 
+        object_id : object_id,
+        user_id:   user_id }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -65,7 +68,6 @@ export class ObjectListComponent implements OnInit {
     });
   }
 
-  // TODO
   update(id:number, owner_id: number){
     this.router.navigate(["/atualizar-patrimonio"], {queryParams:{id:id}})
   }

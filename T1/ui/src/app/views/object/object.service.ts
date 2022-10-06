@@ -43,6 +43,13 @@ export class ObjectService {
       )
   }
 
+  validate(obj: any){
+    return this.http.post<any>(`${environment.apiUrl}/object/validate`, obj)
+    .pipe(
+      catchError(this.handler.bind(this))
+    )
+  }
+
 
   handler(error: any){
 
