@@ -30,7 +30,7 @@
 
         </form>    
         
-        <button mat-raised-button  color="primary" (click)="save()">
+        <button mat-raised-button  color="primary" (click)="save()"*ngIf="object.id == null">
             <i class="material-icons">
                 save
             </i>
