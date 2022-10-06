@@ -51,18 +51,6 @@ CREATE TABLE `objects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- svp.validations definition
-
-CREATE TABLE `validations` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `validated` tinyint(1) NOT NULL,
-  `object` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `validations_FK` (`object`),
-  CONSTRAINT `validations_FK` FOREIGN KEY (`object`) REFERENCES `objects` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 INSERT INTO roles(name) values("admin");
 INSERT INTO roles(name) values("regular");
 INSERT INTO roles(name) values("guest");
