@@ -4,13 +4,8 @@ import { User } from '@app/models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectValidateComponent } from '../object-validate/object-validate.component';
 import { ObjectService } from '../object.service';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
 import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 import { Router } from '@angular/router';
-
-
 
 
 @Component({
@@ -31,7 +26,6 @@ export class ObjectListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private service: ObjectService,
-    private snackBarService: SnackbarService,
     private router: Router) { }
   
   ngOnInit(): void {
@@ -45,14 +39,12 @@ export class ObjectListComponent implements OnInit {
 
   search(){
     let id = this.object.id
- 
 
     this.service.get(id)
       .subscribe(
         (data) => {
         this.resultList = data.data;
       })	
-    
   }
 
   validate(object_id: any, user_id: any){    
