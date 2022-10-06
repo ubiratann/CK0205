@@ -14,7 +14,6 @@ export class ObjectService {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   
-  
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
@@ -50,9 +49,11 @@ export class ObjectService {
     )
   }
 
+  getReports(id: any){
+    return this.http.get<any>(`${environment.apiUrl}/object/user/${id}`)
+  }
 
   handler(error: any){
-
     this.snackBarService.openSnackBar(error.error.message, 'fechar');
     return throwError(() => error)
   }

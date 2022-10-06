@@ -1,17 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { User } from '@app/models/user';
+import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 import { environment } from '@environments/environment';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  
   private _token: any  = '';
   private _role: any   = '';
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar) { }
 
   get token(){
     this._token = localStorage.getItem('token' ?? '');
@@ -37,5 +44,9 @@ export class UserService {
       .pipe();
   }
 
+  handler(error: any){
+    this.snackBar.open(error.error.message, 'fechar')
+    return throwError(() => error)
+  }
 
 }
