@@ -26,19 +26,19 @@
                 <i style="cursor: pointer; color: green;" class="material-icons" >
                     thumb_up
                 </i>
-                {{element.id}}
+                {{element.resume.validated.length}}
                 
                 <i style="cursor: pointer; margin-left: 15px; color: red;" class="material-icons">
                     thumb_down
                 </i>
-                {{element.id}}
+                {{element.resume.not_validated.length}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="open">
             <th mat-header-cell *matHeaderCellDef> Visualizar Relatório</th>
             <td mat-cell *matCellDef="let element">
-                <a [href]="element.file">
+                <a style="cursor: pointer;" (click)="showReports(element)">
                     <i class="material-icons">
                         file_present
                     </i>
