@@ -42,19 +42,18 @@ export class ObjectValidateComponent implements OnInit {
     this.validation.object = this.data.object_id;
     this.validation.validator = this.data.user_id;
 
+    this.dialogRef.close();
     this.service.validate(this.validation)
       .subscribe(data => {
         this.snackBarService.openSnackBar("Patrimônio validado com sucesso!", "fechar!")
-        this.dialogRef.close();
+        
       })
   }
-
 
   validateForm(){
     if(this.validation.description.trim() == ''){
       this.snackBarService.openSnackBar("Insira a descrição da sua validação","fechar")
       return false;
-
     }
     
     if(!this.validation.validated){
