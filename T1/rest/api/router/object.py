@@ -1,3 +1,5 @@
+import json
+
 from http import HTTPStatus
 from flask import Blueprint, Response, request
 from flask_cors import CORS
@@ -5,7 +7,6 @@ from api.service.mysql_connector import DatabaseConnector
 from api.utils.s3 import delete_file, create_local_temp_file, delete_local_temp_file, upload_file
 from api.utils.dynamodb import put_item, purge_item
 
-import json
 
 blueprint = Blueprint("object", __name__)
 
