@@ -40,4 +40,17 @@ def query_resume(item):
         "not_validated": not_validated["Items"]
     }
 
-
+def parse_decimal(body):
+   
+    if isinstance(body, list):
+        for list_item in body:
+            list_item = parse_decimal(list_item)
+    else:
+        for item in body:
+            # recursively parsing nested dicts
+            if isinstance(body[item], dict):
+                body[item] = parse_decimal(body[item])
+            #parsing Decimal objects to int
+            if isinstance(body[item], Decimal):
+                body[item] = int(body[item])  
+    return body
