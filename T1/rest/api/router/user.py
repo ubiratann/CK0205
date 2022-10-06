@@ -76,7 +76,7 @@ def update():
     try:
         _hashed_password = generate_password_hash(password)
         db.execute(f"UPDATE users SET full_name='{fullname}', username='{username}', password='{_hashed_password}'")
-        db.commit()
+        conn.commit_changes()
 
         msg = "Deletado com sucesso"
         code = HTTPStatus.NO_CONTENT
@@ -97,7 +97,7 @@ def delete(id):
 
     try:
         db.execute("DELETE FROM users WHERE id=%s", (id,))
-        db.commit()
+        conn.commit_changes()
 
         msg = "Deletado com sucesso"
         code = HTTPStatus.NO_CONTENT
@@ -126,7 +126,7 @@ def register():
                 {req['role']}
             );
         """)
-        db.commit()
+        conn.commit_changes()
 
         msg = "Registrado com sucesso"
         code = HTTPStatus.CREATED
