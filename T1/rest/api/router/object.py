@@ -1,3 +1,4 @@
+from ast import Raise
 import json
 
 from http import HTTPStatus
@@ -5,14 +6,13 @@ from flask import Blueprint, Response, request
 from flask_cors import CORS
 from api.service.mysql_connector import DatabaseConnector
 from api.utils.s3 import delete_file, create_local_temp_file, delete_local_temp_file, upload_file
-from api.utils.dynamodb import put_item, purge_item
+from api.utils.dynamodb import put_item, purge_item, query_resume
 
 
 blueprint = Blueprint("object", __name__)
 
 CORS(blueprint)
 connector = DatabaseConnector()
-
 
 @blueprint.route("/", methods=["POST"])
 def create():
@@ -76,7 +76,6 @@ def update(object_id):
     status = HTTPStatus.OK
     
     try:
-        print(req)
         if("base64" in req["file"]):
             file_path = create_local_temp_file(req["file"]["base64"], req["file"]["name"], req["owner"]) 
             file_url = upload_file(file_name=file_path, bucket="svp-objects")
@@ -249,6 +248,45 @@ def test():
         response["message"] = str(err)
         status = HTTPStatus.INTERNAL_SERVER_ERROR
 
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
+
+@blueprint.get("/user/<int:user_id>")
+def get_by_user(user_id):
+    cursor = connector.get_cursor()
+
+    response = {}
+    status = HTTPStatus.CREATED
+
+    try:
+        
+        query = f"""
+                SELECT 
+                    o.id as id,
+                    o.name as name,
+                    o.location as location
+                FROM objects o 
+                WHERE o.owner = {user_id};
+        """
+        cursor.execute(operation=query)
+        rows = cursor.fetchall()
+
+        if(rows and len(rows) > 0):
+            for item in rows:
+                item["resume"] = query_resume(item=item)
+        
+        response["data"] = rows
+
+    except Exception as err:
+        response["data"] = {}
+        print(err)
+        response["message"] = str(err)
+
+    finally:
+        cursor.close()
+
+    print(response)
     return Response(response=json.dumps(response),
                     status=status,
                     content_type="text/json; encoding: UTF-8")
