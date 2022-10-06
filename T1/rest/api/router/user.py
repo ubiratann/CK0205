@@ -9,28 +9,6 @@ from api.service.mysql_connector import DatabaseConnector
 blueprint = Blueprint("user", __name__)
 conn = DatabaseConnector()
 
-# @blueprint.before_app_request
-# def load_logged_in_user():
-#     user_id = session.get('user_id')
-#     db = conn.get_cursor()
-
-#     if user_id is None:
-#         g.user = None
-#     else:
-#         g.user = db.execute(
-#             'SELECT * FROM user WHERE id = ?', (user_id,)
-#         ).fetchone()
-
-# def login_required(view):
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             return redirect(url_for('app.login'))
-
-#         return view(**kwargs)
-
-#     return wrapped_view
-
 @blueprint.post("/auth")
 def auth():
     req = request.json
