@@ -1,4 +1,3 @@
-from dis import findlinestarts
 from http import HTTPStatus
 from flask import Blueprint, Response, request
 from flask_cors import CORS
@@ -152,7 +151,7 @@ def getAll():
                         f.s3_link
                     FROM objects o
                     INNER JOIN files f on f.id = o.file;
-                    """
+                """
         
         cursor.execute(operation=query)
         rows = cursor.fetchall()
