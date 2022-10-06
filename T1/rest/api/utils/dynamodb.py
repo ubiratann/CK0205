@@ -1,6 +1,7 @@
 import uuid
 import boto3
 from boto3.dynamodb.conditions import Attr, And, Key
+from decimal import Decimal
 
 
 dynamodb = boto3.resource('dynamodb',region_name='us-east-1')
@@ -28,29 +29,25 @@ def purge_item(object) -> None:
 
 def query_resume(item):
     validated = table.scan(
-        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq(True)
+        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq('true')
     )
 
     not_validated = table.scan(
-        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq(True)
+        FilterExpression= Attr("object").eq(item["id"]) & Attr("validated").eq('false')
     )
 
+    parse_decimal(validated["Items"])
+    parse_decimal(not_validated["Items"])
+
     return {
-        "validated": validated["Items"],
-        "not_validated": not_validated["Items"]
+        "validated":  validated["Items"],
+        "not_validated":  not_validated["Items"]
     }
 
-def parse_decimal(body):
+def parse_decimal(items):
    
-    if isinstance(body, list):
-        for list_item in body:
-            list_item = parse_decimal(list_item)
-    else:
-        for item in body:
-            # recursively parsing nested dicts
-            if isinstance(body[item], dict):
-                body[item] = parse_decimal(body[item])
-            #parsing Decimal objects to int
-            if isinstance(body[item], Decimal):
-                body[item] = int(body[item])  
-    return body
+    if(len(items) > 0):
+        for item in items:
+            for key in item:
+                if isinstance(item[key], Decimal):
+                    item[key] = int(item[key])
