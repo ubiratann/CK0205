@@ -89,6 +89,7 @@ def delete(id):
         else:
             msg = 'Id incorreto'
             code = HTTPStatus.NOT_FOUND
+
         db.close()
     except Exception as err:
         logging.error(err)
@@ -104,24 +105,28 @@ def register():
     db = conn.get_cursor()
 
     try:
-        db.execute(f"""
-            INSERT INTO users (full_name, username, password, role) VALUES (
-                "{req['full_name']}",
-                "{req['username']}",
-                "{generate_password_hash(req['password'])}",
-                {req['role']}
-            );
-        """)
-        conn.commit_changes()
+        db.execute("SELECT id FROM users WHERE username=%s", (req['username'],))
+        user = db.fetchone()
 
-        msg = "Registrado com sucesso"
-        code = HTTPStatus.CREATED
+        if user is None:
+            db.execute(f"""
+                INSERT INTO users (full_name, username, password, role) VALUES (
+                    "{req['full_name']}",
+                    "{req['username']}",
+                    "{generate_password_hash(req['password'])}",
+                    {req['role']}
+                );
+            """)
+            msg = "Registrado com sucesso"
+            code = HTTPStatus.OK
+        else:
+            msg = "Usuario já existe"
+            code = HTTPStatus.BAD_REQUEST
+
+        db.close()
     except Exception as err:
         logging.error(err)
         msg = err
         code = HTTPStatus.INTERNAL_SERVER_ERROR
-    finally:
-        db.close()
-        conn.close_connection()
 
-    return Response(response={"message": msg}, status=code)
+    return Response(msg, status=code)
