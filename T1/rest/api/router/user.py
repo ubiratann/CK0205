@@ -109,14 +109,15 @@ def register():
         user = db.fetchone()
 
         if user is None:
-            db.execute(f"""
-                INSERT INTO users (full_name, username, password, role) VALUES (
-                    "{req['full_name']}",
-                    "{req['username']}",
-                    "{generate_password_hash(req['password'])}",
-                    {req['role']}
-                );
-            """)
+            db.execute(
+                "INSERT INTO users (full_name, username, password, role) VALUES (%s, %s, %s, %s)", 
+                (
+                    req['full_name'],
+                    req['username'],
+                    generate_password_hash(req['password']),
+                    req['role'],
+                )
+            )
             msg = "Registrado com sucesso"
             code = HTTPStatus.OK
         else:
