@@ -79,20 +79,23 @@ def delete(id):
     db = conn.get_cursor()
 
     try:
-        db.execute("DELETE FROM users WHERE id=%s", (id,))
-        conn.commit_changes()
+        db.execute("SELECT id FROM users WHERE id=%s", (id,))
+        user = db.fetchone()
 
-        msg = "Deletado com sucesso"
-        code = HTTPStatus.NO_CONTENT
+        if user is not None:
+            db.execute("DELETE FROM users WHERE id=%s", (id,))
+            msg = "Deletado com sucesso"
+            code = HTTPStatus.OK
+        else:
+            msg = 'Id incorreto'
+            code = HTTPStatus.NOT_FOUND
+        db.close()
     except Exception as err:
         logging.error(err)
         msg = err
         code = HTTPStatus.INTERNAL_SERVER_ERROR
-    finally:
-        db.close()
-        conn.close_connection()
 
-    return Response(response={"message": msg}, status=code)
+    return Response(msg, status=code)
 
 
 @blueprint.post("/register")
