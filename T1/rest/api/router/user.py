@@ -2,7 +2,7 @@ import json
 import logging
 
 from http import HTTPStatus
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from api.service.mysql_connector import DatabaseConnector
 from api.utils.dynamodb import parse_decimal, query_resume
@@ -19,11 +19,11 @@ def auth():
     req = request.json
     db = conn.get_cursor()
     password = req['password']
+    msg = None
 
     try:
-        user = db.execute(
-            f"SELECT * FROM user WHERE username = '{req['username']}'"
-        ).fetchone()
+        db.execute("SELECT * FROM users WHERE username = %s", (req['username'],))
+        user = db.fetchone()
 
         if user is None:
             msg = 'Username incorreto'
@@ -33,20 +33,19 @@ def auth():
         if msg is None:
             session.clear()
             session['user_id'] = user['id']
+
             msg = "Autenticado com sucesso"
             code = HTTPStatus.OK
         else:
             code = HTTPStatus.UNAUTHORIZED
 
+        db.close()
     except Exception as err:
         logging.error(err)
         msg = err
         code = HTTPStatus.INTERNAL_SERVER_ERROR
-    finally:
-        db.close() 
-        conn.close_connection()
 
-    return Response(response={"message": msg}, status=code)
+    return Response(msg, status=code)
 
 @blueprint.patch("/<int:id>")
 def update(id):
