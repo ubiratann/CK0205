@@ -13,6 +13,11 @@ conn = DatabaseConnector()
 
 CORS(blueprint)
 
+@blueprint.post("/signout")
+def signout():
+    session.clear()
+    
+    return Response("Sessão finalizada com sucesso", status=HTTPStatus.OK)
 
 @blueprint.post("/auth")
 def auth():
