@@ -27,6 +27,3 @@ class DatabaseConnector:
 
     def close_connection(self) -> None:
         self.connection.close()
-
-    def commit_changes(self) -> None:
-        self.connection.commit()
