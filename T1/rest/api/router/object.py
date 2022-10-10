@@ -257,7 +257,7 @@ def get_by_user(user_id):
     cursor = connector.get_cursor()
 
     response = {}
-    status = HTTPStatus.CREATED
+    status = HTTPStatus.OK
 
     try:
         
