@@ -44,10 +44,22 @@ def query_resume(item):
         "not_validated":  not_validated["Items"]
     }
 
-def parse_decimal(items):
-   
-    if(len(items) > 0):
-        for item in items:
-            for key in item:
-                if isinstance(item[key], Decimal):
-                    item[key] = int(item[key])
+def parse_decimal(body):
+
+    if isinstance(body, list):
+        for list_item in body:
+            list_item = parse_decimal(list_item)
+    
+    elif isinstance(body, dict):
+        for item in body:
+            if isinstance(body[item], dict):
+                body[item] = parse_decimal(body[item])
+           
+            if isinstance(body[item], Decimal):
+                body[item] = int(body[item])  
+            
+            if isinstance(body[item], list):
+                for index in range(len(body[item])):
+                    if isinstance(body[item][index], Decimal):
+                        print("entrou")
+                        body[item][index] = int(body[item][index])
