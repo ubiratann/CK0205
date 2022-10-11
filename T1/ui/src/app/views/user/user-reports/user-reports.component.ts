@@ -15,7 +15,6 @@ export class UserReportsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.data)
     this.data.validations.validated.forEach((element: any) => {
       this.resultList.push(element);
     });

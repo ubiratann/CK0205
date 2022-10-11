@@ -27,9 +27,12 @@ export class UserLoginComponent implements OnInit {
     this.userService.authenticate(this.user)
       .subscribe(data => {
         if(data){
-          this.userService.token = data.jwtToken;
+          // this.templateService.updateMenu.next();
+          localStorage.setItem("user", JSON.stringify(data["data"]))
+          localStorage.setItem("role", JSON.stringify(data.data.role))
           this.templateService.updateMenu.next();
-          this.router.navigate(['/home']);
+          
+          this.router.navigate(['/']);
         }
       });
   }

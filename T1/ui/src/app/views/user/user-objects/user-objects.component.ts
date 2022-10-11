@@ -19,9 +19,11 @@ export class UserObjectsComponent implements OnInit {
     private service: ObjectService) { }
 
   ngOnInit(): void {
-    this.service.getReports(2)
+    let user = JSON.parse(localStorage.getItem("user") ?? "{}")
+
+    
+    this.service.getReports(user.id)
     .subscribe(data => {
-      console.log(data)
       this.resultList = data.data;
     })
   }
