@@ -6,6 +6,7 @@ import { ObjectValidateComponent } from '../object-validate/object-validate.comp
 import { ObjectService } from '../object.service';
 import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 import { Router } from '@angular/router';
+import { UserService } from '@app/views/user/user.service';
 
 
 @Component({
@@ -26,15 +27,14 @@ export class ObjectListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private service: ObjectService,
-    private router: Router) { }
+    private router: Router,
+    public userService: UserService) { }
   
   ngOnInit(): void {
     
     this.displayedColumns = ["id", "name", "location", "open"]
     this.displayedColumns.push("validate")
     this.displayedColumns.push("update")
-    this.isLoggedIn = true
-    this.loggedUser.id = 1
   }
 
   search(){
