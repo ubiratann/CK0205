@@ -12,6 +12,11 @@
                     [ngTemplateOutletContext]="{menu:menu}">
                 </ng-container>
             </ng-container>
+            <div *ngIf="!this.userService.isLoggedIn()" style="position: relative; bottom: 0;">
+                <mat-list-item class="sidenav" routerLink="/login"  routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                    <mat-icon>login</mat-icon>Login
+                </mat-list-item>
+            </div>
         </mat-nav-list>
         
         <ng-template #parentMenu let-menu="menu" class="sidenav">
