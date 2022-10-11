@@ -1,5 +1,7 @@
 import uuid
 import boto3
+import pprint
+
 from boto3.dynamodb.conditions import Attr, And, Key
 from decimal import Decimal
 
@@ -44,22 +46,45 @@ def query_resume(item):
         "not_validated":  not_validated["Items"]
     }
 
+def get_item(access_level):
+    menu_table = dynamodb.Table('svp-menu')
+
+    items = menu_table.scan(
+        FilterExpression= Attr("access_level").lte(access_level)
+    ) 
+    parse_decimal(items["Items"])
+
+    for item in items["Items"]:
+        for key_ in item:
+            if key_ == "children":
+                for child_item in item[key_]:
+                    if child_item["access_level"] > access_level:
+                         (item[key_].remove(child_item))
+
+    return sorted(items["Items"], key= lambda d: d["id"])
+    
+
 def parse_decimal(body):
 
     if isinstance(body, list):
         for list_item in body:
-            list_item = parse_decimal(list_item)
-    
+            parse_decimal(list_item)
+   
+
     elif isinstance(body, dict):
         for item in body:
             if isinstance(body[item], dict):
-                body[item] = parse_decimal(body[item])
+                parse_decimal(body[item])
            
             if isinstance(body[item], Decimal):
                 body[item] = int(body[item])  
             
             if isinstance(body[item], list):
                 for index in range(len(body[item])):
+                    
                     if isinstance(body[item][index], Decimal):
-                        print("entrou")
                         body[item][index] = int(body[item][index])
+                    
+                    if isinstance(body[item][index], dict):
+                        parse_decimal(body[item][index] )
+
