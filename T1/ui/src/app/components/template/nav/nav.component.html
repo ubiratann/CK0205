@@ -33,10 +33,10 @@
             </mat-expansion-panel>
         </ng-template>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content style="margin-left: 210px;">
         <div *ngIf="loaderService.isLoading | async" class="loader-container">
             <mat-spinner  style="top: 50%; left: 50%;"></mat-spinner>
         </div>
-        <router-outlet></router-outlet>
+        <router-outlet ></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

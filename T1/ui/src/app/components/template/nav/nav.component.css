@@ -5,6 +5,7 @@
 .sidenav {
     background-color: #3f51b5;
     color: #fff;
+    width: 200px;
 }
 
 .loader-container {
