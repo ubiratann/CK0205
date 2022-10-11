@@ -23,8 +23,8 @@ export class TemplateService {
     return localStorage.getItem('role' || '');
   }
 
-  getMenu(role: number){
-    return this.http.get(`${environment.apiUrl}/menu/${role}`);
+  getMenu(acess_level: number){
+    return this.http.get(`${environment.apiUrl}/menu/${2}`);
   }
  
 }
