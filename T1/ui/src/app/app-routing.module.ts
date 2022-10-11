@@ -9,11 +9,13 @@ import { UserUpdateComponent} from './views/user/user-update/user-update.compone
 import { UserSigninComponent} from './views/user/user-signin/user-signin.component';
 import { UserListComponent } from './views/user/user-list/user-list.component';
 import { UserObjectsComponent } from './views/user/user-objects/user-objects.component';
+import { RouteGuard } from './guards/route.guard';
 
 const routes: Routes = [
   {
     path: "",
-    component: UserObjectsComponent
+    component: UserObjectsComponent,
+    canActivate: [RouteGuard]
   },
   {
     path: "pesquisar-patrimonios",
@@ -21,15 +23,20 @@ const routes: Routes = [
   },
   {
     path: "cadastrar-patrimonio",
-    component: ObjectUpdateComponent
+    component: ObjectUpdateComponent,
+    canActivate: [RouteGuard]
+
   },
   {
     path: "atualizar-patrimonio",
     component: ObjectUpdateComponent,
+    canActivate: [RouteGuard]
+
   },
   {
     path: "editar-perfil",
-    component: UserUpdateComponent
+    component: UserUpdateComponent,
+    canActivate: [RouteGuard]
   },
   {
     path: "login",
@@ -41,11 +48,14 @@ const routes: Routes = [
   },
   {
     path: "logout",
-    component: LogoutComponent
+    component: LogoutComponent,
+    canActivate: [RouteGuard]
+
   },
   {
     path: "gerenciar-usuarios",
-    component: UserListComponent
+    component: UserListComponent,
+    canActivate: [RouteGuard]
   }
 
 ];
