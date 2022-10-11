@@ -5,6 +5,8 @@ import { Object } from '@app/models/object';
 import { ObjectService } from '../object.service';
 import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 import { ThisReceiver } from '@angular/compiler';
+import { UserService } from '@app/views/user/user.service';
+import { Location } from '@angular/common';
 
 interface ObjectResponse {
   id: number,
@@ -12,7 +14,8 @@ interface ObjectResponse {
   location: string,
   s3_link: string,
   file_name: string,
-  file_id: number
+  file_id: number,
+  owner: number
 }
 
 @Component({
@@ -28,7 +31,9 @@ export class ObjectUpdateComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private objectService: ObjectService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private userService: UserService,
+    private location: Location) { }
 
   ngOnInit(): void {
     const objectId = this.route.snapshot.queryParams['id'];
@@ -41,16 +46,22 @@ export class ObjectUpdateComponent implements OnInit {
       this.object.id = +objectId;
       this.objectService.get(Number.parseInt(objectId))
         .subscribe(data => {
-          console.log(data.data[0])
+
           const response: ObjectResponse = data.data[0];
-
-          this.file.id = response.file_id;
-          this.file.name = response.file_name;
-
-          this.object.id = response.id;
-          this.object.location = response.location;
-          this.object.name = response.name;
-          this.object.file = response.s3_link;
+          if(response.owner != this.userService.userId){
+            this.object = {}
+            this.snackBarService.openSnackBar("Você não tem permissão de editar esse arquivo", "ok" );
+          }else{
+            console.log(data.data[0])
+  
+            this.file.id = response.file_id;
+            this.file.name = response.file_name;
+  
+            this.object.id = response.id;
+            this.object.location = response.location;
+            this.object.name = response.name;
+            this.object.file = response.s3_link;
+          }
 
         })
     }
@@ -77,9 +88,9 @@ export class ObjectUpdateComponent implements OnInit {
         name: this.object.name, 
         location: this.object.location, 
         file: this.file, 
-        owner: 4})
+        owner: this.userService.userId})
       .subscribe(data => {
-        this.snackBarService.openSnackBar("Patrimônio inserido com sucesso","")
+        this.snackBarService.openSnackBar("Patrimônio inserido com sucesso","ok")
       },)
   }
 
@@ -105,12 +116,12 @@ export class ObjectUpdateComponent implements OnInit {
 
   update(){
     if(!this.validated()) return;
-
+    
     this.objectService.update(this.object.id, {
       name: this.object.name, 
       location: this.object.location, 
       file: this.file, 
-      owner: 4})
+      owner: this.userService.userId})
     .subscribe(data => {
       this.snackBarService.openSnackBar("Patrimônio atualizado com sucesso","fechar");
       this.file = new File();
