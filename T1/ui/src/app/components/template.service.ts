@@ -15,16 +15,12 @@ export class TemplateService {
     return this._updatemenu
   }
 
-  get token(): string | null{
-    return localStorage.getItem('token' || '');
-  }
-
   get role(): string | null{
-    return localStorage.getItem('role' || '');
+    return localStorage.getItem('role' ?? '1');
   }
 
   getMenu(acess_level: number){
-    return this.http.get(`${environment.apiUrl}/menu/${2}`);
+    return this.http.get(`${environment.apiUrl}/menu/${acess_level}`);
   }
  
 }
