@@ -27,6 +27,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(900) NOT NULL,
   `username` varchar(100) NOT NULL,
+  `email` varchar(500) NOT NULL,
   `password` varchar(500) NOT NULL,
   `role` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -51,34 +52,38 @@ CREATE TABLE `objects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-INSERT INTO roles(name) values("admin");
-INSERT INTO roles(name) values("regular");
 INSERT INTO roles(name) values("guest");
+INSERT INTO roles(name) values("regular");
+INSERT INTO roles(name) values("admin");
 
-INSERT INTO users(full_name, username, password, `role`) values (
+INSERT INTO users(full_name, username, email, password, `role`) values (
 	"admin root", 
 	"admin", 
 	"qwe123", 
+  "email@email.com",
 	(SELECT id FROM roles WHERE name LIKE 'admin')
 );
 
-INSERT INTO users(full_name, username, password, `role`) values (
+INSERT INTO users(full_name, username, email, password, `role`) values (
 	"Ubiratan Junior", 
 	"bira", 
 	"qwe123", 
+  "email@email.com",
 	(SELECT id FROM roles WHERE name LIKE 'regular')
 );
 
-INSERT INTO users(full_name, username, password, `role`) values (
+INSERT INTO users(full_name, username, email, password, `role`) values (
 	"Geovane Oliveira", 
 	"xeo", 
 	"qwe123", 
+  "email@email.com",
 	(SELECT id FROM roles WHERE name LIKE 'regular')
 );
 
-INSERT INTO users(full_name, username, password, `role`) values (
+INSERT INTO users(full_name, username, email, password, `role`) values (
 	"guest", 
 	"guest", 
-	"guest", 
+	"guest",
+  "email@email.com",
 	(SELECT id FROM roles WHERE name LIKE 'guest')
 );
