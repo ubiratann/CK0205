@@ -1,7 +1,9 @@
+from dis import findlinestarts
 import json
 import logging
 
 from http import HTTPStatus
+from shutil import ExecError
 from flask import Blueprint, Response, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from api.service.mysql_connector import DatabaseConnector
@@ -16,41 +18,38 @@ CORS(blueprint)
 @blueprint.post("/signout")
 def signout():
     session.clear()
-    
     return Response("Sessão finalizada com sucesso", status=HTTPStatus.OK)
 
 @blueprint.post("/auth")
 def auth():
     req = request.json
     db = conn.get_cursor()
-    password = req['password']
-    msg = None
+
+    response = {}
+    status = HTTPStatus.OK
 
     try:
-        db.execute("SELECT * FROM users WHERE username = %s", (req['username'],))
+        
+        db.execute("SELECT * FROM users WHERE username LIKE %s", (req['username'],))
         user = db.fetchone()
-
-        if user is None:
-            msg = 'Username incorreto'
-        elif not check_password_hash(user['password'], password):
-            msg = 'Senha incorreta'
-
-        if msg is None:
-            session.clear()
-            session['user_id'] = user['id']
-
-            msg = "Autenticado com sucesso"
-            code = HTTPStatus.OK
+        if (not user or  not check_password_hash(user['password'], req['password'])):
+            status = HTTPStatus.UNAUTHORIZED
+            raise Exception("Credenciais inválidas")
         else:
-            code = HTTPStatus.UNAUTHORIZED
-
-        db.close()
+            del user["password"]
+            response["data"] = user
+            status = HTTPStatus.OK
+    
     except Exception as err:
-        logging.error(err)
-        msg = err
-        code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-    return Response(msg, status=code)
+        response["data"] = {}
+        response["message"] = str(err)
+    
+    finally:
+        db.close()
+    print(response)
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
 
 @blueprint.patch("/<int:id>")
 def update(id):
@@ -119,35 +118,52 @@ def delete(id):
     return Response(msg, status=code)
 
 
-@blueprint.post("/register")
+@blueprint.post("/signin")
 def register():
     req = request.json
     db = conn.get_cursor()
 
+    response = {}
+    status = HTTPStatus.OK
+
     try:
-        db.execute("SELECT id FROM users WHERE username=%s", (req['username'],))
+        db.execute("SELECT * FROM users WHERE username LIKE %s", (req['username'],))
         user = db.fetchone()
+        if (not user):
+            query = f"""
+                INSERT 
+                INTO 
+                    users(full_name, username, email, password, role)
+                VALUES (
+                    '{req["full_name"]}',
+                    '{req["username"]}',
+                    '{req["email"]}',
+                    '{generate_password_hash(req["password"])}',
+                    (SELECT id FROM roles WHERE name LIKE 'regular'));
+                """
 
-        if user is None:
-            db.execute(
-                "INSERT INTO users (full_name, username, password, role) VALUES (%s, %s, %s, %s)", 
-                (
-                    req['full_name'],
-                    req['username'].lower(),
-                    generate_password_hash(req['password']),
-                    req['role'],
-                )
-            )
-            msg = "Registrado com sucesso"
-            code = HTTPStatus.OK
+            print(query)
+            db.execute(operation=query)
+
+            response["data"] = req
+            response["data"]["id"] = db.lastrowid
+
+            response["message"] = "Registrado com sucesso!"
+            status = HTTPStatus.OK
+
         else:
-            msg = "Usuario já existe"
-            code = HTTPStatus.BAD_REQUEST
+            status = HTTPStatus.UNAUTHORIZED
+            raise Exception("Este nome de usuário já está em uso");
 
-        db.close()
     except Exception as err:
-        logging.error(err)
-        msg = err
-        code = HTTPStatus.INTERNAL_SERVER_ERROR
+        print(err)
+        response["data"] = {}
+        response["message"] = str(err)
+    
+    finally:
+        db.close()
 
-    return Response(msg, status=code)
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
+
