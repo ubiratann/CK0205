@@ -105,7 +105,7 @@ def update(object_id):
 
             cursor.execute(operation=query)
 
-            purge_item(object=object_id)
+        purge_item(object=object_id)
 
         query = f"""
                     UPDATE objects o
