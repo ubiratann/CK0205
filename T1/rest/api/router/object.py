@@ -146,6 +146,7 @@ def getAll():
                         o.name,
                         o.id,
                         o.location,
+                        o.owner,
                         f.name as file_name,
                         f.id as file_id,
                         f.s3_link
@@ -186,9 +187,11 @@ def get(id):
                         o.name,
                         o.id,
                         o.location,
+                        o.owner,
                         f.name as file_name,
                         f.id as file_id,
                         f.s3_link
+
                     FROM objects o
                     INNER JOIN files f on f.id = o.file
                     WHERE o.id = {id};
