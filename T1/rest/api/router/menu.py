@@ -13,15 +13,15 @@ blueprint = Blueprint("menu", __name__)
 CORS(blueprint)
 connector = DatabaseConnector()
 
-@blueprint.get("/<int:role>")
-def get(role):
+@blueprint.get("/<int:access_level>")
+def get(access_level):
     cursor = connector.get_cursor()
 
     response = {}
     status = HTTPStatus.OK
 
     try:
-        get_item()
+        response["data"] = get_item(access_level)
         
     except Exception as err:
         response["data"] = {}
