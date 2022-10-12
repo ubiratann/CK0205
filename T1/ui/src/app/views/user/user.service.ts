@@ -66,11 +66,32 @@ export class UserService {
   }
 
   isLoggedIn(){
-    console.log(this.user);
     if(this.user.username != null) 
       return true
     
     return false
+  }
+
+  update(user: any){
+    return this.http.patch<any>(`${environment.apiUrl}/user`, user)
+    .pipe(
+      catchError(this.handler.bind(this)));
+  }
+
+  getList(id: any){
+    let url = `${environment.apiUrl}/user/${id}`
+    if(id == null )
+      url = `${environment.apiUrl}/user/`
+
+    return this.http.get<any>(url)
+    .pipe(
+      catchError(this.handler.bind(this)));
+  }
+
+  delete(id: any){
+    return this.http.delete<any>(`${environment.apiUrl}/user/${id}`)
+    .pipe(
+      catchError(this.handler.bind(this)));
   }
 
   handler(error: any){

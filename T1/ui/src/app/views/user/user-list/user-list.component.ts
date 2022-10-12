@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@app/models/user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-list',
@@ -11,20 +12,27 @@ export class UserListComponent implements OnInit {
   user = new User();
   resultList: User[] = [];
   
-  displayedColumns : string[] = ["id", "full_name", "username", "update", "delete"] ;
+  displayedColumns : string[] = ["id", "full_name", "username", "delete"] ;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
   
   ngOnInit(): void {
   }
 
-  // TODO 
-  search(){}
+  search(){
+    this.userService.getList(this.user.id)
+      .subscribe(data => {
+        this.resultList = data.data
+        console.log
+      })
+  }
 
-  // TODO
-  delete(id: number){}
+  delete(id: number){
+    this.userService.delete(id)
+    .subscribe(data => {
+      this.resultList = data.data
+    })
+  }
 
-  // TODO
-  update(id:number){}
 
 }

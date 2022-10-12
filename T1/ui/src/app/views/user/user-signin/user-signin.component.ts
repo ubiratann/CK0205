@@ -20,10 +20,6 @@ export class UserSigninComponent implements OnInit {
     private snackBarService: SnackbarService) { }
 
   ngOnInit(): void {
-    this.user.email = "ubira@email.com"
-    this.user.username = "ubira"
-    this.user.full_name = "ubiratan"
-    this.user.password = "qwe123"
   }
 
 

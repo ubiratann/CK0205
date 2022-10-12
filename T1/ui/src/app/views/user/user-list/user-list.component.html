@@ -8,14 +8,6 @@
         <mat-form-field class="width10 marginRight15px">
             <input  [(ngModel)]="user.id" matInput placeholder="ID" name="id">
         </mat-form-field>
-    
-        <mat-form-field class="width35 marginRight15px">
-            <input [(ngModel)]="user.full_name" matInput placeholder="Nome" name="full_name">
-        </mat-form-field>
-    
-        <mat-form-field class="width35 marginRight15px">
-            <input [(ngModel)]="user.username" matInput placeholder="Username" name="username">
-        </mat-form-field>
    
     </form>
     
@@ -46,16 +38,7 @@
             <td mat-cell *matCellDef="let element"> {{(element.username.length>30)? (element.username | slice:0:30)+' ...':(element.username)}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="update" >
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-                <i style="cursor: pointer;" class="material-icons"(click)="update(element.id)">
-                    edit
-                </i>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="update" >
+        <ng-container matColumnDef="delete" >
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
                 <i style="cursor: pointer;" class="material-icons" (click)="delete(element.id)">
