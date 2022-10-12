@@ -4,11 +4,13 @@ import logging
 
 from http import HTTPStatus
 from shutil import ExecError
+from sqlite3 import OperationalError
 from flask import Blueprint, Response, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from api.service.mysql_connector import DatabaseConnector
 from api.utils.dynamodb import parse_decimal, query_resume
 from flask_cors import CORS
+from api.utils.s3 import delete_file, create_local_temp_file, delete_local_temp_file, upload_file
 
 blueprint = Blueprint("user", __name__)
 conn = DatabaseConnector()
@@ -51,71 +53,116 @@ def auth():
                     status=status,
                     content_type="text/json; encoding: UTF-8")
 
-@blueprint.patch("/<int:id>")
-def update(id):
+@blueprint.patch("/")
+def update():
     req = request.json
     db = conn.get_cursor()
 
+    response = {}
+    status = HTTPStatus.OK
+
     try:
-        db.execute("SELECT id FROM users WHERE id=%s", (id,))
+        db.execute("SELECT * FROM users WHERE username LIKE %s", (req['username'],))
         user = db.fetchone()
+        if (not user):
+            query = f"""
+                UPDATE
+                    users 
+                SET
+                    full_name= '{req["full_name"]}', 
+                    username= '{req["username"]}', 
+                    email= '{req["email"]}', 
+                    password= '{generate_password_hash(req["password"])}')
+                WHERE
+                    username like '{req["username"]}';
+                """
 
-        if user is not None:
-            db.execute("SELECT * FROM users WHERE username = %s", (req['username'],))
-            user = db.fetchone()
+            print(query)
+            db.execute(operation=query)
 
-            if user is None or (user is not None and user['username'].lower() == req['username'].lower() and user['id'] == id):
-                db.execute(
-                    "UPDATE users SET full_name=%s, username=%s, password=%s WHERE id=%s",
-                    (
-                        req['full_name'],
-                        req['username'],
-                        generate_password_hash(req['password']),
-                        id,
-                    )
-                )
-                msg = "Alterado com sucesso"
-                code = HTTPStatus.OK
-            else:
-                msg = "Username já existe"
-                code = HTTPStatus.NOT_ACCEPTABLE
-            
+            response["data"] = req
+            response["data"]["id"] = db.lastrowid
+
+            response["message"] = "Registrado com sucesso!"
+            status = HTTPStatus.OK
+
         else:
-            msg = "Usuario não encontrado"
-            code = HTTPStatus.NOT_FOUND
+            status = HTTPStatus.UNAUTHORIZED
+            raise Exception("Este nome de usuário já está em uso");
 
-        db.close() 
     except Exception as err:
-        logging.error(err)
-        msg = err
-        code = HTTPStatus.INTERNAL_SERVER_ERROR
+        print(err)
+        response["data"] = {}
+        response["message"] = str(err)
+    
+    finally:
+        db.close()
 
-    return Response(msg, status=code)
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
 
 
-@blueprint.delete('/delete/<int:id>')
+
+@blueprint.delete('/<int:id>')
 def delete(id):
     db = conn.get_cursor()
+    response = {}
+    code = HTTPStatus.OK
 
     try:
-        db.execute("SELECT id FROM users WHERE id=%s", (id,))
-        user = db.fetchone()
+        query = f"""
+            SELECT 
+                f.name as name,
+                f.id as id
+            FROM
+                objects o 
+            INNER JOIN
+                files f ON f.object = o.id
+            WHERE 
+                o.owner = {id};
+        """
 
-        if user is not None:
-            db.execute("DELETE FROM users WHERE id=%s", (id,))
-            msg = "Deletado com sucesso"
-            code = HTTPStatus.OK
-        else:
-            msg = 'Id incorreto'
-            code = HTTPStatus.NOT_FOUND
+        db.execute(operation=query)
+        files = db.fetchall()
+        print(files)
 
-        db.close()
+        # if(len(files) > 0):
+        #     for file in files:
+        #         delete_file("svp-objects", f"{id}/{file['name']}")
+
+        #         query = f"""
+        #             DELETE FROM files WHERE id = {file['id']};
+        #         """
+        #         db.execute(operation=query)
+
+
+        # query = f"""
+        #     DELETE FROM objects WHERE owner = {id};
+        # """
+        # db.execute(operation=query)
+        # db.fetchall()
+
+        # query = f"""
+        #     DELETE FROM users WHERE id = {id};
+        # """
+        
+        # db.execute("SELECT id FROM users WHERE id=%s", (id,))
+        # user = db.fetchone()
+
+        # if user is not None:
+        #     db.execute("DELETE FROM users WHERE id=%s", (id,))
+        #     response["message"] = "Deletado com sucesso"
+        #     code = HTTPStatus.OK
+        # else:
+        #     response["message"] = 'Id incorreto'
+        #     code = HTTPStatus.NOT_FOUND
+
     except Exception as err:
-        logging.error(err)
-        msg = err
+        response["message"] = str(err)
         code = HTTPStatus.INTERNAL_SERVER_ERROR
 
-    return Response(msg, status=code)
+    return Response(json.dumps(response), status=code)
 
 
 @blueprint.post("/signin")
@@ -167,3 +214,68 @@ def register():
                     status=status,
                     content_type="text/json; encoding: UTF-8")
 
+@blueprint.get("/<int:id>")
+def getOne(id):
+    req = request.json
+    cursor = conn.get_cursor()
+
+    response = {}
+    status = HTTPStatus.OK
+
+    try:
+
+        query = f"""
+            SELECT * FROM user WHERE id={id};
+        """
+
+        cursor.execute(operation=query)
+        users = cursor.fetchall()
+
+        if(not users or len(users) == 0):
+            status = HTTPStatus.NOT_FOUND
+            raise Exception("Não foram encontrados usuários")
+
+        response["data"] = users
+
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+
+    finally:
+        cursor.close()
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
+
+@blueprint.get("/")
+def getMany():
+    cursor = conn.get_cursor()
+
+    response = {}
+    status = HTTPStatus.OK
+
+    try:
+        query = f"""
+            SELECT * FROM users;
+        """
+
+        cursor.execute(operation=query)
+        users = cursor.fetchall()
+
+        if(not users or len(users) == 0):
+            status = HTTPStatus.NOT_FOUND
+            raise Exception("Não foram encontrados usuários")
+        else:
+            response["data"] = users
+            response["message"] = "Busca concluída com sucesso"
+
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+    finally:
+        cursor.close()
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
