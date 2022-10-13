@@ -94,6 +94,12 @@ export class UserService {
       catchError(this.handler.bind(this)));
   }
 
+  updateRole(user: any){
+    return this.http.put<any>(`${environment.apiUrl}/user/role/${user.role}`, user)
+    .pipe(
+      catchError(this.handler.bind(this)));
+  }
+
   handler(error: any){
     this.snackBar.open(error.error.message ,'fechar')
     return throwError(() => error)

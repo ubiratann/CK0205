@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@app/models/user';
+import { SnackbarService } from '@app/utils/snackbar/snackbar.service';
 import { UserService } from '../user.service';
 
 @Component({
@@ -12,9 +13,11 @@ export class UserListComponent implements OnInit {
   user = new User();
   resultList: User[] = [];
   
-  displayedColumns : string[] = ["id", "full_name", "username", "delete"] ;
+  displayedColumns : string[] = ["id", "full_name", "username", "delete", "role"] ;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private snackBarService: SnackbarService) { }
   
   ngOnInit(): void {
   }
@@ -34,5 +37,11 @@ export class UserListComponent implements OnInit {
     })
   }
 
-
+  updateRole(role:number, id:number ){
+    this.userService.updateRole({role: role, id:id})
+      .subscribe(data => {
+        this.snackBarService.openSnackBar(data.message, "ok")
+      })
+  
+  }
 }

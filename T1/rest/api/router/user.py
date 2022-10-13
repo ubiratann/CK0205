@@ -280,3 +280,36 @@ def getMany():
     return Response(response=json.dumps(response),
                     status=status,
                     content_type="text/json; encoding: UTF-8")
+
+@blueprint.put("/role/<int:role>")
+def updateRole(role):
+    cursor = conn.get_cursor()
+    req = request.json
+
+    response = {}
+    status = HTTPStatus.OK
+
+    try:
+        query = f"""
+            UPDATE 
+                users
+            SET
+                role = {role}
+            WHERE
+                id = {req["id"]};
+        """
+
+        cursor.execute(operation=query)
+        response["data"] = {}
+        response["message"] = "Nível de acesso atualizado com sucesso!"
+
+    except Exception as err:
+        response["data"] = {}
+        response["message"] = str(err)
+
+    finally:
+        cursor.close()
+
+    return Response(response=json.dumps(response),
+                    status=status,
+                    content_type="text/json; encoding: UTF-8")
