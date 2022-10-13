@@ -216,7 +216,6 @@ def register():
 
 @blueprint.get("/<int:id>")
 def getOne(id):
-    req = request.json
     cursor = conn.get_cursor()
 
     response = {}
@@ -225,12 +224,13 @@ def getOne(id):
     try:
 
         query = f"""
-            SELECT * FROM user WHERE id={id};
+            SELECT * FROM users WHERE id={id};
         """
 
         cursor.execute(operation=query)
         users = cursor.fetchall()
 
+        print(users)
         if(not users or len(users) == 0):
             status = HTTPStatus.NOT_FOUND
             raise Exception("Não foram encontrados usuários")
@@ -238,6 +238,7 @@ def getOne(id):
         response["data"] = users
 
     except Exception as err:
+        print(err)
         response["data"] = {}
         response["message"] = str(err)
 
