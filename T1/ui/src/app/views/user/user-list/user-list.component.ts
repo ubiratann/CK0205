@@ -26,14 +26,14 @@ export class UserListComponent implements OnInit {
     this.userService.getList(this.user.id)
       .subscribe(data => {
         this.resultList = data.data
-        console.log
       })
   }
 
   delete(id: number){
     this.userService.delete(id)
     .subscribe(data => {
-      this.resultList = data.data
+      this.snackBarService.openSnackBar(data.message, "ok")
+      this.resultList = this.resultList.filter( element => element.id != id)
     })
   }
 

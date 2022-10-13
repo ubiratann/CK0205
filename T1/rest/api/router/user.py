@@ -1,16 +1,12 @@
-from dis import findlinestarts
 import json
-import logging
 
 from http import HTTPStatus
-from shutil import ExecError
-from sqlite3 import OperationalError
 from flask import Blueprint, Response, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from api.service.mysql_connector import DatabaseConnector
-from api.utils.dynamodb import parse_decimal, query_resume
 from flask_cors import CORS
-from api.utils.s3 import delete_file, create_local_temp_file, delete_local_temp_file, upload_file
+from api.utils.s3 import delete_file
+from api.utils.dynamodb import purge_item
 
 blueprint = Blueprint("user", __name__)
 conn = DatabaseConnector()
@@ -113,56 +109,53 @@ def delete(id):
     try:
         query = f"""
             SELECT 
-                f.name as name,
-                f.id as id
+                *
             FROM
-                objects o 
-            INNER JOIN
-                files f ON f.object = o.id
-            WHERE 
-                o.owner = {id};
+                objects o
+            WHERE
+                 o.owner = {id};
+            
         """
 
         db.execute(operation=query)
-        files = db.fetchall()
-        print(files)
+        objects= db.fetchall()
 
-        # if(len(files) > 0):
-        #     for file in files:
-        #         delete_file("svp-objects", f"{id}/{file['name']}")
+        if(objects and len(objects)>0 ):
+            for obj in objects:
+                query = f"""
+                    SELECT * FROM objects WHERE id = {obj['file']};
+                """
 
-        #         query = f"""
-        #             DELETE FROM files WHERE id = {file['id']};
-        #         """
-        #         db.execute(operation=query)
+                db.execute(query)
+                files = db.fetchall()
+            
+                query = f""" DELETE FROM objects where id = {obj['id']};"""
+                db.execute(query)
 
+                for file in files:
+                    delete_file("svp-objects", f"{id}/{file['name']}")  #deletando arquivos do s3
+                    query = f""" DELETE FROM files WHERE id = {file['id']};"""
+                    db.execute(query)
 
-        # query = f"""
-        #     DELETE FROM objects WHERE owner = {id};
-        # """
-        # db.execute(operation=query)
-        # db.fetchall()
+                purge_item(obj["id"])
 
-        # query = f"""
-        #     DELETE FROM users WHERE id = {id};
-        # """
-        
-        # db.execute("SELECT id FROM users WHERE id=%s", (id,))
-        # user = db.fetchone()
-
-        # if user is not None:
-        #     db.execute("DELETE FROM users WHERE id=%s", (id,))
-        #     response["message"] = "Deletado com sucesso"
-        #     code = HTTPStatus.OK
-        # else:
-        #     response["message"] = 'Id incorreto'
-        #     code = HTTPStatus.NOT_FOUND
+        query = f"""
+            DELETE FROM users WHERE id = {id};
+        """
+        db.execute(query)
+        db.fetchall()
+      
+        response["data"] = {}
+        response["message"] = f"O usuário com id = {id} foi removido!"
 
     except Exception as err:
         response["message"] = str(err)
         code = HTTPStatus.INTERNAL_SERVER_ERROR
 
-    return Response(json.dumps(response), status=code)
+    return Response(json.dumps(response), 
+                    status=code,
+                    content_type="text/json; encoding: UTF-8")
+
 
 
 @blueprint.post("/signin")
