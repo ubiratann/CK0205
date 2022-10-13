@@ -52,38 +52,16 @@ CREATE TABLE `objects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-INSERT INTO roles(name) values("guest");
-INSERT INTO roles(name) values("regular");
-INSERT INTO roles(name) values("admin");
+INSERT INTO roles(id, name) values(1, "guest");
+INSERT INTO roles(id, name) values(2, "regular");
+INSERT INTO roles(id, name) values(3,"admin");
 
-INSERT INTO users(full_name, username, email, password, `role`) values (
-	"admin root", 
+INSERT INTO users(id, full_name, username, email, password, `role`) values (
+	1,
+  "admin", 
 	"admin", 
 	"qwe123", 
   "email@email.com",
 	(SELECT id FROM roles WHERE name LIKE 'admin')
 );
 
-INSERT INTO users(full_name, username, email, password, `role`) values (
-	"Ubiratan Junior", 
-	"bira", 
-	"qwe123", 
-  "email@email.com",
-	(SELECT id FROM roles WHERE name LIKE 'regular')
-);
-
-INSERT INTO users(full_name, username, email, password, `role`) values (
-	"Geovane Oliveira", 
-	"xeo", 
-	"qwe123", 
-  "email@email.com",
-	(SELECT id FROM roles WHERE name LIKE 'regular')
-);
-
-INSERT INTO users(full_name, username, email, password, `role`) values (
-	"guest", 
-	"guest", 
-	"guest",
-  "email@email.com",
-	(SELECT id FROM roles WHERE name LIKE 'guest')
-);
