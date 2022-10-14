@@ -58,9 +58,22 @@ def update():
     status = HTTPStatus.OK
 
     try:
-        db.execute("SELECT * FROM users WHERE username LIKE %s", (req['username'],))
+        db.execute(f"""SELECT * FROM users WHERE username LIKE '{req["username"]}'""")
         user = db.fetchone()
-        if (not user):
+
+        if (user and user["id"] != req["id"]):
+            status = HTTPStatus.UNAUTHORIZED
+            raise Exception("Já existe um usuário com este username")
+        
+        else:    
+            db.execute(f"""SELECT * FROM users WHERE id = {req["id"]}""")
+            user = db.fetchone()
+
+            password = user["password"]
+            
+            if(req["password"] and req["password"] != ''):
+                password = generate_password_hash(req["password"]) 
+            
             query = f"""
                 UPDATE
                     users 
@@ -68,26 +81,20 @@ def update():
                     full_name= '{req["full_name"]}', 
                     username= '{req["username"]}', 
                     email= '{req["email"]}', 
-                    password= '{generate_password_hash(req["password"])}')
+                    password= '{password}')
                 WHERE
-                    username like '{req["username"]}';
+                    id like {req["id"]};
                 """
 
-            print(query)
             db.execute(operation=query)
 
             response["data"] = req
             response["data"]["id"] = db.lastrowid
 
-            response["message"] = "Registrado com sucesso!"
+            response["message"] = "Usuário alterado com sucesso!"
             status = HTTPStatus.OK
 
-        else:
-            status = HTTPStatus.UNAUTHORIZED
-            raise Exception("Este nome de usuário já está em uso");
-
     except Exception as err:
-        print(err)
         response["data"] = {}
         response["message"] = str(err)
     
