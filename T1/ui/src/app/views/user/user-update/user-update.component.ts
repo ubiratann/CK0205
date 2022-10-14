@@ -32,7 +32,7 @@ export class UserUpdateComponent implements OnInit {
     if(this.validate()){
       this.service.update(this.user)
         .subscribe(data => {
-          this.snackBar.openSnackBar(data.data.message, "ok");
+          this.snackBar.openSnackBar(data.message, "ok");
         });
     }
   }
