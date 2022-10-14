@@ -73,7 +73,7 @@ export class UserService {
   }
 
   update(user: any){
-    return this.http.patch<any>(`${environment.apiUrl}/user`, user)
+    return this.http.patch<any>(`${environment.apiUrl}/user/`, user)
     .pipe(
       catchError(this.handler.bind(this)));
   }
