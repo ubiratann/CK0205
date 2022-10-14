@@ -16,7 +16,7 @@ export class UserListComponent implements OnInit {
   displayedColumns : string[] = ["id", "full_name", "username", "delete", "role"] ;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private snackBarService: SnackbarService) { }
   
   ngOnInit(): void {

@@ -41,7 +41,7 @@
         <ng-container matColumnDef="delete" >
             <th mat-header-cell *matHeaderCellDef>Deletar Usuário</th>
             <td mat-cell *matCellDef="let element">
-                <i *ngIf="element.username != 'admin'" style="cursor: pointer;" class="material-icons" (click)="delete(element.id)">
+                <i *ngIf="element.username != 'admin' && element.id != this.userService.userId" style="cursor: pointer;" class="material-icons" (click)="delete(element.id)">
                     delete
                 </i>
             </td>
