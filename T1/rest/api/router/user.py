@@ -83,7 +83,7 @@ def update():
                     email= '{req["email"]}', 
                     password= '{password}')
                 WHERE
-                    id like {req["id"]};
+                    id = {req["id"]};
                 """
 
             db.execute(operation=query)
