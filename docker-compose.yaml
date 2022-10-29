@@ -1,0 +1,55 @@
+version: "3.9"
+
+networks:
+  svp_network:
+    driver: bridge
+
+services:
+
+  rest:
+    build: ./rest/
+    ports: 
+      - 5000
+    networks:
+      - svp_network
+      
+  ui:
+    build: ./ui/
+    ports:
+      - 8080
+    networks:
+      - svp_network
+
+  mysql:
+    image: mysql:latest
+    cap_add:
+      - "SYS_NICE"
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "p4ss@word"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - db:/var/lib/mysql
+      - ./database/db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - svp_network
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 10s
+        retries: 3
+
+  minio:
+    image: 'bitnami/minio:latest'
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
+    networks:
+      - svp_network
+    

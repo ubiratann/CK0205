@@ -1,6 +1,6 @@
 FROM python:3.10-alpine
 
-LABEL MAINTENER="Ubiratan Júnior<ubiratan_junior@atlantico.com.br>"
+LABEL MAINTENER="Ubiratan Júnior"
 
 # Criando pasta de destino e copiando a aplicação
 WORKDIR /app
