@@ -91,6 +91,8 @@ export class ObjectUpdateComponent implements OnInit {
         owner: this.userService.userId})
       .subscribe(data => {
         this.snackBarService.openSnackBar("Patrimônio inserido com sucesso","ok")
+        this.object = new Object()
+        this.file = new File()
       },)
   }
 
