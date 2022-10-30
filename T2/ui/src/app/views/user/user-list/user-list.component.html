@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-card-title>
+        Controle de Usuários
+    </mat-card-title>
+    
+    <form class="flexRow">
+    
+        <mat-form-field class="width10 marginRight15px">
+            <input  [(ngModel)]="user.id" matInput placeholder="ID" name="id">
+        </mat-form-field>
+   
+    </form>
+    
+    <button mat-raised-button  color="primary" (click)="search()">
+        <i class="material-icons">
+            search
+        </i>
+        Pesquisar
+    </button>
+    
+</mat-card>
+
+<mat-card *ngIf="resultList != null && resultList.length > 0">
+    <table mat-table [dataSource]="resultList" class="mat-elevation-z8">
+       
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+         
+        <ng-container matColumnDef="full_name">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let element"> {{(element.full_name.length>30)? (element.full_name | slice:0:30)+' ...':(element.full_name)}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef> Username </th>
+            <td mat-cell *matCellDef="let element"> {{(element.username.length>30)? (element.username | slice:0:30)+' ...':(element.username)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete" >
+            <th mat-header-cell *matHeaderCellDef>Deletar Usuário</th>
+            <td mat-cell *matCellDef="let element">
+                <i *ngIf="element.username != 'admin' && element.id != this.userService.userId" style="cursor: pointer;" class="material-icons" (click)="delete(element.id)">
+                    delete
+                </i>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role" >
+            <th mat-header-cell *matHeaderCellDef>Nível de Acesso</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field>
+                    <mat-select [disabled]="element.username == 'admin'" [(ngModel)]="element.role" (selectionChange)="updateRole(element.role, element.id)">
+                      <mat-option [value]="2">Regular</mat-option>
+                      <mat-option [value]="3">Administador</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>                
+    </table>
+</mat-card>

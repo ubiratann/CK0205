@@ -1,0 +1,24 @@
+@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.flexColumn{
+    display: flex;
+    flex-direction: column;
+}
+
+.flexRow{
+    display: flex;
+    flex-direction: row;
+}
+
+.flexAlignCenter{
+    align-items: center;
+}
+
+.flexJustifyCenter{
+    justify-content: center;
+}

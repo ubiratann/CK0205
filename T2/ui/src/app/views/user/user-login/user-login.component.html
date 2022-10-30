@@ -1,0 +1,39 @@
+<mat-card>
+    <div id="container" class="flexColumn flexAlignCenter">
+
+        <mat-card-title>
+            Login
+        </mat-card-title>
+        
+        <mat-card-content>    
+
+            <form  class="flexColumn">
+
+                <mat-form-field class="width35 marginRight15px">
+                    <input [(ngModel)]="user.username" matInput placeholder="Nome" name="location">
+                </mat-form-field>
+            
+                <mat-form-field>
+                    <input  matInput placeholder="Senha" [type]="hide ? 'password' : 'text'"  [(ngModel)]="user.password" name="password">
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field> 
+        
+                <button mat-raised-button  color="primary" (click)="login()">
+                    <i class="material-icons">
+                        login
+                    </i>
+                    Login
+                </button>
+                <button style="margin-top: 10px;" mat-raised-button  color="secondary" (click)="signin()">
+                    <i class="material-icons">
+                        arrow_upward
+                    </i>
+                    Cadastre-se
+                </button>
+            </form>
+            
+
+        </mat-card-content>
+    </div>
+
+</mat-card>
