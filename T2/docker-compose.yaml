@@ -57,10 +57,16 @@ services:
       build: ./rest/
       image: svp-rest
       container_name: svp-rest
+      volumes:
+        - ./aws:/home/aws
       ports:
         - "5000:5000"
       environment:
         ENVIRONMENT: "PROD"
+
+        #aws
+        AWS_SHARED_CREDENTIALS_FILE: /home/aws/config
+        AWS_CONFIG_FILE: /home/aws/config
         
         #flask 
         APPLICATION_HOST: "0.0.0.0"
