@@ -1,0 +1,47 @@
+<mat-sidenav-container class="container">
+    <mat-sidenav class="sidenav" mode="side" opened fixedInViewport="true" >
+        <mat-nav-list>
+            <div class="logo-nav flexColumn flexAlignCenter">
+                <img src="./assets/img/favicon.png">
+                <span style="color: black;">
+                    S. V. P.
+                </span>
+            </div>
+            <ng-container *ngFor="let menu of menuList; index as i;">
+                <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
+                    [ngTemplateOutletContext]="{menu:menu}">
+                </ng-container>
+            </ng-container>
+            <div *ngIf="!this.userService.isLoggedIn()" style="position: relative; bottom: 0;">
+                <mat-list-item class="sidenav" routerLink="/login"  routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                    <mat-icon>login</mat-icon>Login
+                </mat-list-item>
+            </div>
+        </mat-nav-list>
+        
+        <ng-template #parentMenu let-menu="menu" class="sidenav">
+            <mat-list-item class="sidenav" [routerLink]="menu.routerLink"  routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                <mat-icon>{{menu.icon}}</mat-icon> {{menu.text}}
+            </mat-list-item>
+        </ng-template>
+        
+        <ng-template #childMenu let-menu="menu" >
+            <mat-expansion-panel [class.mat-elevation-z0]="true" hideToggle>
+                <mat-expansion-panel-header class="sidenav">
+                    <mat-icon mat-list-icon>{{menu.icon}}</mat-icon>{{menu.text}}
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <mat-list-item class="sidenav" [routerLink]="submenu.routerLink" *ngFor="let submenu of menu.children" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">
+                        <mat-icon>{{submenu.icon}}</mat-icon> {{submenu.text}}
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-expansion-panel>
+        </ng-template>
+    </mat-sidenav>
+    <mat-sidenav-content style="margin-left: 210px;">
+        <div *ngIf="loaderService.isLoading | async" class="loader-container">
+            <mat-spinner  style="top: 50%; left: 50%;"></mat-spinner>
+        </div>
+        <router-outlet ></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
