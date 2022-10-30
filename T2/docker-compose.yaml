@@ -1,0 +1,99 @@
+version: '3.9'
+services:
+    
+    svp-database:
+      image: mysql:latest
+      cap_add:
+        - "SYS_NICE"
+      container_name: svp-database
+      environment:
+        MYSQL_ROOT_PASSWORD: "p4ss@word"
+      ports:
+        - "3306:3306"
+      expose:
+        - "3306"
+      volumes:
+        - db:/var/lib/mysql
+        - ./database/db.sql:/docker-entrypoint-initdb.d/init.sql
+      networks:
+        - svp_network
+      healthcheck:
+          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          interval: 10s
+          timeout: 10s
+          retries: 3
+
+    svp-storage:
+      image: quay.io/minio/minio
+      container_name: svp-storage
+      ports:
+        - 9000:9000
+        - 9090:9090
+      expose:
+        - 9000
+        - 9090
+      volumes:
+        - $HOME/minio/data:/data
+      environment:
+        MINIO_ROOT_USER: root
+        MINIO_ROOT_PASSWORD: p4ssw0rd
+      command: [ "server", "/data", "--console-address", ":9090" ]
+      networks:
+        - svp_network
+
+    svp-ui:
+      build: ./ui/
+      image: svp-ui
+      container_name: svp-ui
+      ports: 
+        - "8080:80"
+      networks:
+        - svp_network
+      depends_on:
+        svp-rest:
+          condition: service_started
+
+    svp-rest:
+      build: ./rest/
+      image: svp-rest
+      container_name: svp-rest
+      ports:
+        - "5000:5000"
+      environment:
+        ENVIRONMENT: "PROD"
+        
+        #flask 
+        APPLICATION_HOST: "0.0.0.0"
+        APPLICATION_PORT: "5000"
+        API_VERSION: "v1"
+        
+        #minio
+        MINIO_ACCESS_KEY: root
+        MINIO_SECRET_KEY: p4ssw0rd
+        MINIO_HOST: svp-storage
+        MINIO_HOST_PORT: 9000
+
+        #mysql
+        MYSQL_HOST: "svp-database"
+        MYSQL_DATABASE: "svp"
+        MYSQL_USER: "root"
+        MYSQL_PASSWORD: "p4ss@word"
+
+      depends_on:
+        svp-database: 
+          condition: service_healthy
+        svp-storage:
+          condition: service_started
+
+      networks:
+        - svp_network
+    
+
+networks:
+  svp_network:
+    name: svp_network
+    driver: bridge
+    
+volumes:
+  db:
+    driver: local
