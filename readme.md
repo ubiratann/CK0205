@@ -50,4 +50,4 @@ Para realizar o deploy em uma instancia EC2 é necessário que as seguintes conf
 
 Feitas essas configurações, e clonado o repositório, basta que seja feita a configuração do build do frontend de forma que o endereço configurado no arquivo `CK0205/T2/ui/src/environment/environment.prod.ts` seja o seguinte `http:<ip_ou_dns_publico_da_instancia>:5000/api/v1`.
 
-Após isso realize os mesmos passos de confguração dos [volumes](#volumes) e [deploy](#deploy) e o sistema estará disponível em `http:<ip_ou_dns_publico_da_instancia>:8080`
+Após isso realize os mesmos passos de confguração dos [volumes](#volumes) e [deploy](#deploy) e o sistema estará disponível em `http://<ip_ou_dns_publico_da_instancia>:8080`
