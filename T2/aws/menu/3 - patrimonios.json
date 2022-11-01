@@ -1,0 +1,20 @@
+{
+    "id": 3,
+    "access_level": 1,
+    "children": [
+     {
+      "access_level": 1,
+      "icon": "search",
+      "routerLink": "/pesquisar-patrimonios",
+      "text": "Pesquisar"
+     },
+     {
+      "access_level": 2,
+      "icon": "add",
+      "routerLink": "/cadastrar-patrimonio",
+      "text": "Cadastrar"
+     }
+    ],
+    "icon": "category",
+    "text": "Patrimônios"
+}

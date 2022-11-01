@@ -1,0 +1,14 @@
+{
+    "id": 4,
+    "access_level": 3,
+    "children": [
+     {
+      "access_level": 3,
+      "icon": "group",
+      "routerLink": "/gerenciar-usuarios",
+      "text": "Usuários"
+     }
+    ],
+    "icon": "admin_panel_settings",
+    "text": "Admin"
+}

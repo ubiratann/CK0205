@@ -1,0 +1,7 @@
+{
+    "id": 1,
+    "access_level": 2,
+    "icon": "home",
+    "routerLink": "/",
+    "text": "Home"
+}

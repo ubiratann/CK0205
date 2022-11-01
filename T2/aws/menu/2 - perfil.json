@@ -1,0 +1,20 @@
+{
+    "id": 2,
+    "access_level": 2,
+    "children": [
+     {
+      "access_level": 2,
+      "icon": "manage_accounts",
+      "routerLink": "/editar-perfil",
+      "text": "Editar"
+     },
+     {
+      "access_level": 2,
+      "icon": "logout",
+      "routerLink": "/logout",
+      "text": "Logout"
+     }
+    ],
+    "icon": "person",
+    "text": "Perfil"
+}
