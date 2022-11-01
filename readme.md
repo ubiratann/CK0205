@@ -14,7 +14,7 @@ Link para video demonstrativo do Trabalho 01 aqui: [Video demosntrativo](https:/
 Para realizar o deploy do front-end é necessário configurar o endereço do rest no valor da variavel `apiUrl` que fica em `CK0205/T2/ui/src/environment/environment.prod.ts`, essa variável pode ser setada com o valor `http://<endereço_do_rest>:5000/api/v1`, como forma de simular um serviço simples de DNS, você pode utilizar `http://svp-rest:5000/api/v1`, e adicionar uma entrada no arquivo hosts do sistema operacional redirecionando as requisições destinadas a `svp-rest` e `svp-ui` para `127.0.0.1`, para fazer isso você deve adicionar a seguinte linha ao fim do arquivo:
 
 ```
-127.0.0.1 svp-rest svp-ui
+127.0.0.1 svp-rest svp-ui svp-database svp-storage
 ```
 
 Localizando arquivo hosts:
@@ -33,7 +33,7 @@ Para realizar o deploy é necessário que algumas pastas dentro da pasta `CK0245
 
 #### Deploy
 
-Após o processo de configuração, é necessário apenas executar o comando `docker compose up` dentro da pasta `CK0205/T2`, e o sistema estará disponível em `http://svp-ui:8080`
+Após o processo de configuração, é necessário apenas executar o comando `docker compose build && docker compose up` dentro da pasta `CK0205/T2`, e o sistema estará disponível em `http://svp-ui:8080`
 
 ### Setup para AWS
 
