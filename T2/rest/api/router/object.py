@@ -78,7 +78,7 @@ def update(object_id):
     try:
         if("base64" in req["file"]):
             file_path = create_local_temp_file(req["file"]["base64"], req["file"]["name"], req["owner"]) 
-            file_url = upload_file(file_name=file_path, bucket="svp")
+            file_url = upload_file(object_name=file_path, bucket_name="svp")
             delete_local_temp_file(file_path=file_path)
 
             query = f"""
