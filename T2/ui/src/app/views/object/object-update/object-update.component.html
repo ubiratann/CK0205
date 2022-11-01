@@ -1,0 +1,48 @@
+<mat-card>    
+
+    <mat-card-title *ngIf="object.id != null">    
+       Atualizar Patrimônio   
+    </mat-card-title>
+    <mat-card-title *ngIf="object.id == null">    
+        Cadastrar Patrimônio   
+     </mat-card-title>    
+    
+    <mat-card-content>    
+        <form class="flexColumn">
+
+            <mat-form-field >
+                <input matInput placeholder="Nome" [(ngModel)]="object.name" name="name">
+            </mat-form-field>
+            
+            <mat-form-field>
+                <input matInput placeholder="Localização" [(ngModel)]="object.location" name="location" >
+            </mat-form-field>
+                        
+            <input #fileInput hidden="true" type="file"  (change)="loadFile($event)" accept=".jpg,.jpeg,.png,.pdf"/>
+            <div>
+                <mat-form-field >
+                    <input matInput disabled [value]="file != null ? file.name : 'Selecione um arquivo'">
+                </mat-form-field>
+                <button mat-fab color="primary" (click)="fileInput.click()" style="margin-left: 10px;">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+            </div>
+
+        </form>    
+        
+        <button mat-raised-button  color="primary" (click)="save()"*ngIf="object.id == null">
+            <i class="material-icons">
+                save
+            </i>
+            Salvar
+        </button>
+
+        <button mat-raised-button  color="primary" (click)="update()" *ngIf="object.id != null">
+            <i class="material-icons">
+                save
+            </i>
+            Atualizar
+        </button>
+
+    </mat-card-content>    
+</mat-card>  
