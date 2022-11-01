@@ -61,7 +61,8 @@ INSERT INTO users(id, full_name, username, email, password, `role`) values (
   "admin", 
 	"admin", 
   "email@email.com",
-	"pbkdf2:sha256:260000$DSpxlbHUsiuiJSCg$fcd8bf3857b5ecaaf15ab1dd13b7cd7c32d5e6a20174413f1d642ff521d63cfb", --r00tp4ss
+	"pbkdf2:sha256:260000$DSpxlbHUsiuiJSCg$fcd8bf3857b5ecaaf15ab1dd13b7cd7c32d5e6a20174413f1d642ff521d63cfb", 
 	(SELECT id FROM roles WHERE name LIKE 'admin')
 );
 
+--admin password = r00tp4ss
