@@ -33,7 +33,7 @@ services:
         - 9000
         - 9090
       volumes:
-        - $HOME/minio/data:/data
+        - ./minio/data:/data
       environment:
         MINIO_ROOT_USER: root
         MINIO_ROOT_PASSWORD: p4ssw0rd
