@@ -1,2 +1,4 @@
 node_modules/
 .aws/
+T2/aws/config
+minio/
