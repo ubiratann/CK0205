@@ -78,6 +78,7 @@ services:
         MINIO_SECRET_KEY: p4ssw0rd
         MINIO_HOST: svp-storage
         MINIO_HOST_PORT: 9000
+        SVP_STORAGE_PUBLIC_URL: svp-storage:9000
 
         #mysql
         MYSQL_HOST: "svp-database"

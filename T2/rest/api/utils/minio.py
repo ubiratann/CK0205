@@ -8,6 +8,7 @@ MINIO_HOST       = os.environ.get('MINIO_HOST')
 MINIO_HOST_PORT  = os.environ.get('MINIO_HOST_PORT')
 MINIO_ACCESS_KEY = os.environ.get('MINIO_ACCESS_KEY')
 MINIO_SECRET_KEY = os.environ.get('MINIO_SECRET_KEY')
+SVP_STORAGE_PUBLIC_URL = os.environ.get('SVP_STORAGE_PUBLIC_URL')
 minio_client = Minio(endpoint=f"{MINIO_HOST}:{MINIO_HOST_PORT}", access_key=MINIO_ACCESS_KEY, secret_key=MINIO_SECRET_KEY, secure=False)
 
 def create_local_temp_file(base64_string, filename, owner_id):
@@ -35,7 +36,7 @@ def create_bucket(bucket_name):
 
 def upload_file(object_name, bucket_name):
     minio_client.fput_object(bucket_name=bucket_name, object_name=object_name, file_path=f"/tmp/{object_name}")
-    return f"http://{MINIO_HOST}:{MINIO_HOST_PORT}/{bucket_name}/{object_name}"
+    return f"http://{SVP_STORAGE_PUBLIC_URL}/{bucket_name}/{object_name}"
 
 def delete_file(bucket, object_name):
     minio_client.remove_object(bucket_name=bucket, object_name=object_name)
