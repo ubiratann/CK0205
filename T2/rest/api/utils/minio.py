@@ -36,7 +36,7 @@ def create_bucket(bucket_name):
 
 def upload_file(object_name, bucket_name):
     minio_client.fput_object(bucket_name=bucket_name, object_name=object_name, file_path=f"/tmp/{object_name}")
-    return f"http://{SVP_STORAGE_PUBLIC_URL}/{bucket_name}/{object_name}"
+    return f"{SVP_STORAGE_PUBLIC_URL}/{bucket_name}/{object_name}"
 
 def delete_file(bucket, object_name):
     minio_client.remove_object(bucket_name=bucket, object_name=object_name)
