@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://svp-rest:5000/api/v1"
+  apiUrl: "http://54.173.218.71/svp-api/v1"
 };
