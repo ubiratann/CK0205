@@ -71,8 +71,8 @@ def update():
             user = db.fetchone()
 
             password = user["password"]
-            
-            if(req["password"] and req["password"] != ''):
+
+            if("password" in req and req["password"] != ''):
                 password = generate_password_hash(req["password"]) 
             
             query = f"""
@@ -82,7 +82,7 @@ def update():
                     full_name= '{req["full_name"]}', 
                     username= '{req["username"]}', 
                     email= '{req["email"]}', 
-                    password= '{password}')
+                    password= '{password}'
                 WHERE
                     id = {req["id"]};
                 """
@@ -97,6 +97,7 @@ def update():
 
     except Exception as err:
         response["data"] = {}
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
         response["message"] = str(err)
     
     finally:
