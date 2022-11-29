@@ -12,5 +12,15 @@ blueprint = Blueprint("healthcheck", __name__)
 
 @blueprint.get("/")
 def get():
-    return Response(response=json.dumps({"message":"sucess!"}),
-                    status=HTTPStatus.OK)
+    status = None
+    response = None
+    try:
+        connector = DatabaseConnector()
+        status = HTTPStatus.OK
+        response = json.dumps({"message":"sucess!"})
+    except Exception as err:
+        status = HTTPStatus.INTERNAL_SERVER_ERROR
+        response = err
+
+    return Response(response=response,
+                    status=status)
