@@ -19,7 +19,7 @@ version = os.environ.get("API_VERSION", "v1")
 
 minio.create_bucket(BUCKET_NAME)
 
-app.register_blueprint(healthcheck.blueprint, url_prefix='/')
+app.register_blueprint(healthcheck.blueprint, url_prefix='/api/v1/health')
 app.register_blueprint(obj.blueprint, url_prefix=f"/api/{version}/object")
 app.register_blueprint(user.blueprint, url_prefix=f"/api/{version}/user")
 app.register_blueprint(menu.blueprint, url_prefix=f"/api/{version}/menu")
